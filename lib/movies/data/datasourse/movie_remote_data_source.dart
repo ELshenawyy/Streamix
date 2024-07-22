@@ -19,15 +19,6 @@ class MovieRemoteDataSource extends BaseMovieRemoteDataSource {
   final Dio dio;
 
   MovieRemoteDataSource() : dio = Dio() {
-    dio.interceptors.add(LogInterceptor(
-      request: true,
-      requestHeader: true,
-      requestBody: true,
-      responseHeader: true,
-      responseBody: true,
-      error: true,
-    ));
-
     // Disable SSL verification for development purposes
     (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
         (client) {
@@ -40,7 +31,6 @@ class MovieRemoteDataSource extends BaseMovieRemoteDataSource {
   @override
   Future<List<MovieModel>> getNowPlayingMovies() async {
     final response = await dio.get(ApiConstance.nowPlayingMoviePath);
-
     if (response.statusCode == 200) {
       return List<MovieModel>.from((response.data["results"] as List)
           .map((e) => MovieModel.fromJson(e)));
