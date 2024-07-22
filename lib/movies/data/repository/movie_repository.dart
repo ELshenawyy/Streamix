@@ -1,10 +1,10 @@
 import 'package:dartz/dartz.dart';
 import 'package:movie_app/core/error/exceptions.dart';
-import 'package:movie_app/movies/data/datasourse/movie_remote_data_source.dart';
 import 'package:movie_app/movies/domain/entities/movies.dart';
 import 'package:movie_app/movies/domain/repository/base_movie_repository.dart';
 
 import '../../../core/error/failures.dart';
+import '../datasource/movie_remote_data_source.dart';
 
 class MovieRepository extends BaseMovieRepository {
   final BaseMovieRemoteDataSource baseMovieRemoteDataSource;

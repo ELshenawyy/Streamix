@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:movie_app/movies/domain/entities/movies.dart';
 import 'package:movie_app/movies/presentation/screens/movie_screen.dart';
 
+import 'core/services/service_locator.dart';
+
 void main() {
+  ServiceLocator().init();
   runApp(const MyApp());
 }
 
@@ -15,7 +18,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Movie Screen',
       theme: ThemeData(
-
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
