@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
+import 'package:dio/io.dart';
 import 'package:movie_app/core/error/exceptions.dart';
 import 'package:movie_app/core/network/api_constance.dart';
 import 'package:movie_app/core/network/error_movie_model.dart';
@@ -13,7 +16,26 @@ abstract class BaseMovieRemoteDataSource {
 }
 
 class MovieRemoteDataSource extends BaseMovieRemoteDataSource {
-  final Dio dio = Dio();
+  final Dio dio;
+
+  MovieRemoteDataSource() : dio = Dio() {
+    dio.interceptors.add(LogInterceptor(
+      request: true,
+      requestHeader: true,
+      requestBody: true,
+      responseHeader: true,
+      responseBody: true,
+      error: true,
+    ));
+
+    // Disable SSL verification for development purposes
+    (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
+        (client) {
+      client.badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
+      return client;
+    };
+  }
 
   @override
   Future<List<MovieModel>> getNowPlayingMovies() async {

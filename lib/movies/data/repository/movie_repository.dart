@@ -1,5 +1,5 @@
 import 'package:dartz/dartz.dart';
-import 'package:dio/dio.dart';
+import 'package:movie_app/core/error/exceptions.dart';
 import 'package:movie_app/movies/data/datasourse/movie_remote_data_source.dart';
 import 'package:movie_app/movies/domain/entities/movies.dart';
 import 'package:movie_app/movies/domain/repository/base_movie_repository.dart';
@@ -16,11 +16,8 @@ class MovieRepository extends BaseMovieRepository {
     try {
       final result = await baseMovieRemoteDataSource.getNowPlayingMovies();
       return Right(result);
-    } catch (e) {
-      if (e is DioException) {
-        return Left(ServerFailure.fromDioError(e));
-      }
-      return Left(ServerFailure(e.toString()));
+    } on ServerException catch (failure) {
+      return Left(ServerFailure(failure.errorMovieModel.statusMessage));
     }
   }
 
@@ -29,11 +26,8 @@ class MovieRepository extends BaseMovieRepository {
     try {
       final result = await baseMovieRemoteDataSource.getPopularMovies();
       return Right(result);
-    } catch (e) {
-      if (e is DioException) {
-        return Left(ServerFailure.fromDioError(e));
-      }
-      return Left(ServerFailure(e.toString()));
+    } on ServerException catch (failure) {
+      return Left(ServerFailure(failure.errorMovieModel.statusMessage));
     }
   }
 
@@ -42,11 +36,8 @@ class MovieRepository extends BaseMovieRepository {
     try {
       final result = await baseMovieRemoteDataSource.getTopRatedMovies();
       return Right(result);
-    } catch (e) {
-      if (e is DioException) {
-        return Left(ServerFailure.fromDioError(e));
-      }
-      return Left(ServerFailure(e.toString()));
+    } on ServerException catch (failure) {
+      return Left(ServerFailure(failure.errorMovieModel.statusMessage));
     }
   }
 }
