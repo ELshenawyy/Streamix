@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:movie_app/movies/domain/entities/movies.dart';
-import 'package:movie_app/movies/presentation/screens/movie_screen.dart';
 
 import 'core/services/service_locator.dart';
+import 'movies/presentation/screens/movies_screen.dart';
 
 void main() {
   ServiceLocator().init();
@@ -16,12 +16,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Movie Screen',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MovieScreen(),
+      home: const MainMoviesScreen(),
     );
   }
 }
