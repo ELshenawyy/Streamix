@@ -4,6 +4,8 @@ import 'package:movie_app/movies/data/repository/movie_repository.dart';
 import 'package:movie_app/movies/domain/repository/base_movie_repository.dart';
 import 'package:movie_app/movies/domain/usecase/get_now_playing_movies_use_case.dart';
 
+import '../../movies/presentation/controllers/movies_bloc.dart';
+
 final GetIt getIt = GetIt.instance;
 
 class ServiceLocator {
@@ -20,5 +22,8 @@ class ServiceLocator {
     /// Use cases
     getIt.registerLazySingleton<GetNowPlayingMoviesUseCase>(
         () => GetNowPlayingMoviesUseCase(getIt()));
+
+    /// Bloc
+    getIt.registerFactory<MoviesBloc>(() => MoviesBloc(getIt()));
   }
 }

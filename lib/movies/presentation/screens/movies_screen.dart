@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:movie_app/core/services/service_locator.dart';
 import 'package:movie_app/movies/presentation/controllers/movies_bloc.dart';
+import 'package:movie_app/movies/presentation/controllers/movies_events.dart';
 import '../component/now_playing_component.dart';
 import '../component/popular_movies_component.dart';
 import '../component/top_rated_movies.dart';
@@ -13,7 +14,7 @@ class MoviesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (BuildContext context) => getIt<MoviesBloc>(),
+      create: (BuildContext context) => getIt<MoviesBloc>()..add(GetNowPlayingMoviesEvent()),
       child: Scaffold(
         backgroundColor: Colors.grey.shade900,
         body: SingleChildScrollView(
