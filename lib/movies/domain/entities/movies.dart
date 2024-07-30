@@ -17,7 +17,6 @@ class Movie extends Equatable {
     required this.genreIds,
     required this.overview,
     required this.releaseDate,
-
   });
 
   @override

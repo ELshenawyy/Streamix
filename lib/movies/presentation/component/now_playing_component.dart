@@ -15,6 +15,7 @@ class NowPlayingComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<MoviesBloc, MoviesState>(builder: (context, state) {
+
       switch (state.nowPlayingState) {
         case RequestState.loading:
           return const SizedBox(
@@ -116,7 +117,7 @@ class NowPlayingComponent extends StatelessWidget {
           return  SizedBox(
             height: 400,
             child: Center(
-              child: Text(state.message),
+              child: Text(state.nowPlayingMessage),
             ),
           );
       }
