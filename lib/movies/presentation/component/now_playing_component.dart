@@ -14,7 +14,13 @@ class NowPlayingComponent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MoviesBloc, MoviesState>(builder: (context, state) {
+    return BlocBuilder<MoviesBloc, MoviesState>(
+        buildWhen: (previous, current) {
+          return previous.nowPlayingState != current.nowPlayingState;
+        },
+        builder: (context, state) {
+
+
 
       switch (state.nowPlayingState) {
         case RequestState.loading:
