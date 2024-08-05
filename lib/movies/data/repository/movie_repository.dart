@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:movie_app/core/error/exceptions.dart';
+import 'package:movie_app/movies/domain/entities/details_movies.dart';
 import 'package:movie_app/movies/domain/entities/movies.dart';
 import 'package:movie_app/movies/domain/repository/base_movie_repository.dart';
 
@@ -39,5 +40,11 @@ class MovieRepository extends BaseMovieRepository {
     } on ServerException catch (failure) {
       return Left(ServerFailure(failure.errorMovieModel.statusMessage));
     }
+  }
+
+  @override
+  Future<Either<Failure, DetailsMovies>> getMovieDetails() {
+    // TODO: implement getMovieDetails
+    throw UnimplementedError();
   }
 }
