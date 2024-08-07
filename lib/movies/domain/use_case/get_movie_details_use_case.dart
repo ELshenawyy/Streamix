@@ -9,7 +9,7 @@ class GetMovieDetailsUseCase
     extends BaseUseCases<DetailsMovies, MovieDetailsParameter> {
   final BaseMovieRepository baseMovieRepository;
 
-  GetMovieDetailsUseCase({required this.baseMovieRepository});
+  GetMovieDetailsUseCase(this.baseMovieRepository);
 
   @override
   Future<Either<Failure, DetailsMovies>> call(
