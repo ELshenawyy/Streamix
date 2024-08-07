@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:movie_app/movies/domain/entities/details_movies.dart';
 import 'package:movie_app/movies/domain/entities/movies.dart';
+import 'package:movie_app/movies/domain/use_case/get_movie_details_use_case.dart';
 
 import '../../../core/error/failures.dart';
 
@@ -11,6 +12,6 @@ abstract class BaseMovieRepository {
 
   Future<Either<Failure, List<Movie>>> getTopRatedMovies();
 
-  Future<Either<Failure, DetailsMovies>> getMovieDetails();
+  Future<Either<Failure, DetailsMovies>> getMovieDetails(MovieDetailsParameter parameter);
 
 }
