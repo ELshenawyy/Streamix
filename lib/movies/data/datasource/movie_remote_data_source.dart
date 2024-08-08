@@ -6,7 +6,9 @@ import 'package:movie_app/core/error/exceptions.dart';
 import 'package:movie_app/core/network/api_constance.dart';
 import 'package:movie_app/core/network/error_movie_model.dart';
 import 'package:movie_app/movies/data/model/movie_model.dart';
+import 'package:movie_app/movies/data/model/recommendation_model.dart';
 import 'package:movie_app/movies/domain/use_case/get_movie_details_use_case.dart';
+import 'package:movie_app/movies/domain/use_case/get_recommendation_movies_use_case.dart';
 
 import '../model/movie_details_model.dart';
 
@@ -19,6 +21,8 @@ abstract class BaseMovieRemoteDataSource {
 
   Future<MovieDetailsModel> getMoviesDetails(MovieDetailsParameter parameter);
 
+  Future<List<RecommendationModel>> getRecommendationMovies(
+      RecommendationParameter parameter);
 }
 
 class MovieRemoteDataSource extends BaseMovieRemoteDataSource {
@@ -74,8 +78,8 @@ class MovieRemoteDataSource extends BaseMovieRemoteDataSource {
   @override
   Future<MovieDetailsModel> getMoviesDetails(
       MovieDetailsParameter parameter) async {
-    final response = await dio.get(
-        ApiConstance.detailsMoviePath(parameter.movieId));
+    final response =
+        await dio.get(ApiConstance.detailsMoviePath(parameter.movieId));
 
     if (response.statusCode == 200) {
       return MovieDetailsModel.fromJson(response.data);
@@ -84,5 +88,18 @@ class MovieRemoteDataSource extends BaseMovieRemoteDataSource {
           errorMovieModel: ErrorMovieModel.fromJson(response.data));
     }
   }
-}
 
+  @override
+  Future<List<RecommendationModel>> getRecommendationMovies(
+      RecommendationParameter parameter) async {
+    final response = await dio.get(ApiConstance.recommendationsMoviePath(parameter.id));
+
+    if (response.statusCode == 200) {
+      return List<RecommendationModel>.from((response.data["results"] as List)
+          .map((e) => RecommendationModel.fromJson(e)));
+    } else {
+      throw ServerException(
+          errorMovieModel: ErrorMovieModel.fromJson(response.data));
+    }
+  }
+}
