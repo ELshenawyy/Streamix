@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_app/core/utils/enums.dart';
 import 'package:movie_app/movies/presentation/controllers/movies_bloc.dart';
 import 'package:movie_app/movies/presentation/controllers/movies_state.dart';
+import 'package:movie_app/movies/presentation/screens/movie_detail_screen.dart';
 
 import '../../../core/network/api_constance.dart';
 
@@ -14,14 +15,9 @@ class NowPlayingComponent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MoviesBloc, MoviesState>(
-        buildWhen: (previous, current) {
-          return previous.nowPlayingState != current.nowPlayingState;
-        },
-        builder: (context, state) {
-
-
-
+    return BlocBuilder<MoviesBloc, MoviesState>(buildWhen: (previous, current) {
+      return previous.nowPlayingState != current.nowPlayingState;
+    }, builder: (context, state) {
       switch (state.nowPlayingState) {
         case RequestState.loading:
           return const SizedBox(
@@ -45,7 +41,11 @@ class NowPlayingComponent extends StatelessWidget {
                   return GestureDetector(
                     key: const Key('openMovieMinimalDetail'),
                     onTap: () {
-                      /// TODO : NAVIGATE TO MOVIE DETAILS
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => MovieDetailScreen(id: item.id),
+                        ),
+                      );
                     },
                     child: Stack(
                       children: [
@@ -120,7 +120,7 @@ class NowPlayingComponent extends StatelessWidget {
           );
 
         case RequestState.error:
-          return  SizedBox(
+          return SizedBox(
             height: 400,
             child: Center(
               child: Text(state.nowPlayingMessage),

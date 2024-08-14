@@ -9,7 +9,7 @@ class GetRecommendationMoviesUseCase
     extends BaseUseCases<List<Recommendation>, RecommendationParameter> {
   final BaseMovieRepository baseMovieRepository;
 
-  GetRecommendationMoviesUseCase({required this.baseMovieRepository});
+  GetRecommendationMoviesUseCase(this.baseMovieRepository);
 
   @override
   Future<Either<Failure, List<Recommendation>>> call(parameter) async {
