@@ -35,7 +35,7 @@ class MovieDetailsBloc extends Bloc<MoviesDetailsEvents, MovieDetailsState> {
     );
   }
 
-  FutureOr<void> _getRecommendationMovieEvent(
+  FutureOr<void>       _getRecommendationMovieEvent(
       GetRecommendedMoviesEvent event, Emitter<MovieDetailsState> emit) async {
     final result = await getRecommendationMoviesUseCase(
       RecommendationParameter(id: event.id),

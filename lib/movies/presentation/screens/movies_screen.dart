@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:movie_app/core/services/service_locator.dart';
+import 'package:movie_app/core/utils/app_strings.dart';
 import 'package:movie_app/movies/presentation/controllers/movies_bloc.dart';
 import 'package:movie_app/movies/presentation/controllers/movies_events.dart';
 import '../component/now_playing_component.dart';
@@ -32,7 +33,7 @@ class MoviesScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "Popular",
+                      AppStrings.popular,
                       style: GoogleFonts.poppins(
                         color: Colors.white,
                         fontSize: 19,
@@ -49,7 +50,7 @@ class MoviesScreen extends StatelessWidget {
                         child: Row(
                           children: [
                             Text(
-                              'See More',
+                              AppStrings.seeMore,
                               style: TextStyle(color: Colors.white),
                             ),
                             Icon(
@@ -76,7 +77,7 @@ class MoviesScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "Top Rated",
+                      AppStrings.topRated,
                       style: GoogleFonts.poppins(
                         color: Colors.white,
                         fontSize: 19,
@@ -93,7 +94,7 @@ class MoviesScreen extends StatelessWidget {
                         child: Row(
                           children: [
                             Text(
-                              'See More',
+                              AppStrings.seeMore,
                               style: TextStyle(color: Colors.white),
                             ),
                             Icon(
