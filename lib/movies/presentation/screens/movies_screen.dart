@@ -10,7 +10,9 @@ import '../component/popular_movies_component.dart';
 import '../component/top_rated_movies.dart';
 
 class MoviesScreen extends StatelessWidget {
-  const MoviesScreen({super.key});
+  final Function(ThemeMode) onThemeChanged;
+
+  const MoviesScreen({required this.onThemeChanged, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -20,99 +22,119 @@ class MoviesScreen extends StatelessWidget {
         ..add(GetPopularMoviesEvent())
         ..add(GetTopRatedMoviesEvent()),
       child: Scaffold(
-        backgroundColor: Colors.grey.shade900,
-        body: SingleChildScrollView(
+        body: CustomScrollView(
           key: const Key('movieScrollView'),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const NowPlayingComponent(),
-              Container(
-                margin: const EdgeInsets.fromLTRB(16.0, 24.0, 16.0, 8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      AppStrings.popular,
-                      style: GoogleFonts.poppins(
-                        color: Colors.white,
-                        fontSize: 19,
-                        fontWeight: FontWeight.w500,
-                        letterSpacing: 0.15,
-                      ),
-                    ),
-                    InkWell(
-                      onTap: () {
-                        /// TODO : NAVIGATION TO POPULAR SCREEN
-                      },
-                      child: const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Row(
-                          children: [
-                            Text(
-                              AppStrings.seeMore,
-                              style: TextStyle(color: Colors.white),
-                            ),
-                            Icon(
-                              color: Colors.white,
-                              Icons.arrow_forward_ios,
-                              size: 16.0,
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+          slivers: [
+            SliverAppBar(
+              expandedHeight: 60.0,
+              floating: false,
+              pinned: false,
+              stretch: true,
+              automaticallyImplyLeading: false,
+              flexibleSpace: const FlexibleSpaceBar(
+                titlePadding:
+                    EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
+                title: Text('Movies'),
               ),
-              const PopularMoviesComponent(),
-              Container(
-                margin: const EdgeInsets.fromLTRB(
-                  16.0,
-                  24.0,
-                  16.0,
-                  8.0,
+              actions: [
+                Switch(
+                  value: Theme.of(context).brightness == Brightness.dark,
+                  onChanged: (value) {
+                    onThemeChanged(value ? ThemeMode.dark : ThemeMode.light);
+                  },
                 ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      AppStrings.topRated,
-                      style: GoogleFonts.poppins(
-                        color: Colors.white,
-                        fontSize: 19,
-                        fontWeight: FontWeight.w500,
-                        letterSpacing: 0.15,
-                      ),
-                    ),
-                    InkWell(
-                      onTap: () {
-                        /// TODO : NAVIGATION TO Top Rated Movies Screen
-                      },
-                      child: const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Row(
-                          children: [
-                            Text(
-                              AppStrings.seeMore,
-                              style: TextStyle(color: Colors.white),
-                            ),
-                            Icon(
-                              color: Colors.white,
-                              Icons.arrow_forward_ios,
-                              size: 16.0,
-                            )
-                          ],
+              ],
+            ),
+            SliverList(
+              delegate: SliverChildListDelegate(
+                [
+                  const NowPlayingComponent(),
+                  Container(
+                    margin: const EdgeInsets.fromLTRB(16.0, 24.0, 16.0, 8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          AppStrings.popular,
+                          style: GoogleFonts.poppins(
+                            color: Theme.of(context).textTheme.bodyLarge?.color,
+                            fontSize: 19,
+                            fontWeight: FontWeight.w500,
+                            letterSpacing: 0.15,
+                          ),
                         ),
-                      ),
+                        InkWell(
+                          onTap: () {
+                            /// TODO : NAVIGATION TO POPULAR SCREEN
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              children: [
+                                Text(
+                                  AppStrings.seeMore,
+                                  style: Theme.of(context).textTheme.bodyMedium,
+                                ),
+                                const Icon(
+                                  Icons.arrow_forward_ios,
+                                  size: 16.0,
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                  const PopularMoviesComponent(),
+                  Container(
+                    margin: const EdgeInsets.fromLTRB(
+                      16.0,
+                      24.0,
+                      16.0,
+                      8.0,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          AppStrings.topRated,
+                          style: GoogleFonts.poppins(
+                            color: Theme.of(context).textTheme.bodyLarge?.color,
+                            fontSize: 19,
+                            fontWeight: FontWeight.w500,
+                            letterSpacing: 0.15,
+                          ),
+                        ),
+                        InkWell(
+                          onTap: () {
+                            /// TODO : NAVIGATION TO Top Rated Movies Screen
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              children: [
+                                Text(
+                                  AppStrings.seeMore,
+                                  style: Theme.of(context).textTheme.bodyMedium,
+                                ),
+                                const Icon(
+                                  Icons.arrow_forward_ios,
+                                  size: 16.0,
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const TopRatedMovies(),
+                  const SizedBox(height: 50.0),
+                ],
               ),
-              const TopRatedMovies(),
-              const SizedBox(height: 50.0),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

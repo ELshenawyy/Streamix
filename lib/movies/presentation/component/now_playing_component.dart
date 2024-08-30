@@ -1,14 +1,13 @@
-import 'package:animate_do/animate_do.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:movie_app/core/utils/enums.dart';
 import 'package:movie_app/movies/presentation/controllers/movies_bloc.dart';
 import 'package:movie_app/movies/presentation/controllers/movies_state.dart';
-import 'package:movie_app/movies/presentation/screens/movie_detail_screen.dart';
-
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:animate_do/animate_do.dart';
 import '../../../core/network/api_constance.dart';
+import '../../../core/utils/enums.dart';
+import '../screens/movie_detail_screen.dart';
 
 class NowPlayingComponent extends StatelessWidget {
   const NowPlayingComponent({super.key});
@@ -34,12 +33,10 @@ class NowPlayingComponent extends StatelessWidget {
               options: CarouselOptions(
                 height: 400.0,
                 viewportFraction: 1.0,
-                onPageChanged: (index, reason) {},
               ),
               items: state.nowPlayingMovies.map(
                 (item) {
                   return GestureDetector(
-                    key: const Key('openMovieMinimalDetail'),
                     onTap: () {
                       Navigator.of(context).push(
                         MaterialPageRoute(
@@ -51,17 +48,19 @@ class NowPlayingComponent extends StatelessWidget {
                       children: [
                         ShaderMask(
                           shaderCallback: (rect) {
-                            return const LinearGradient(
+                            final theme = Theme.of(context);
+                            final isDarkMode = theme.brightness == Brightness.dark;
+
+                            return LinearGradient(
                               begin: Alignment.topCenter,
                               end: Alignment.bottomCenter,
                               colors: [
-                                // fromLTRB
                                 Colors.transparent,
-                                Colors.black,
-                                Colors.black,
+                                isDarkMode ? Colors.black.withOpacity(0.7) : Colors.white.withOpacity(0.9),
+                                isDarkMode ? Colors.black.withOpacity(0.7) : Colors.white.withOpacity(0.8),
                                 Colors.transparent,
                               ],
-                              stops: [0, 0.3, 0.5, 1],
+                              stops: const [0, 0.15, 0.75, 1],
                             ).createShader(
                               Rect.fromLTRB(0, 0, rect.width, rect.height),
                             );
@@ -88,11 +87,13 @@ class NowPlayingComponent extends StatelessWidget {
                                       color: Colors.redAccent,
                                       size: 16.0,
                                     ),
-                                    const SizedBox(width: 4.0),
+                                    const SizedBox(width: 5.0),
                                     Text(
                                       'Now Playing'.toUpperCase(),
-                                      style: const TextStyle(
-                                          fontSize: 16.0, color: Colors.white),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyLarge
+                                          ?.copyWith(fontSize: 18),
                                     ),
                                   ],
                                 ),
@@ -102,10 +103,12 @@ class NowPlayingComponent extends StatelessWidget {
                                 child: Text(
                                   item.title,
                                   textAlign: TextAlign.center,
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 24,
-                                  ),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyLarge
+                                      ?.copyWith(
+                                        fontSize: 24,
+                                      ),
                                 ),
                               ),
                             ],
