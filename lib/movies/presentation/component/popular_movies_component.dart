@@ -8,6 +8,7 @@ import 'package:movie_app/movies/presentation/controllers/movies_state.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../core/network/api_constance.dart';
+import '../screens/movie_detail_screen.dart';
 
 class PopularMoviesComponent extends StatelessWidget {
   const PopularMoviesComponent({super.key});
@@ -44,11 +45,14 @@ class PopularMoviesComponent extends StatelessWidget {
                       padding: const EdgeInsets.only(right: 8.0),
                       child: InkWell(
                         onTap: () {
-                          /// TODO : NAVIGATE TO  MOVIE DETAILS
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => MovieDetailScreen(id: movie.id),
+                            ),
+                          );
                         },
                         child: ClipRRect(
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(8.0)),
+                          borderRadius: const BorderRadius.all(Radius.circular(8.0)),
                           child: CachedNetworkImage(
                             width: 120.0,
                             fit: BoxFit.cover,
@@ -65,8 +69,7 @@ class PopularMoviesComponent extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            errorWidget: (context, url, error) =>
-                                const Icon(Icons.error),
+                            errorWidget: (context, url, error) => const Icon(Icons.error),
                           ),
                         ),
                       ),

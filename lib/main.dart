@@ -1,39 +1,53 @@
+// In your main.dart or another setup file
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:movie_app/core/utils/app_strings.dart';
+import 'Splash/presentation/views/splash_view.dart';
 import 'core/services/service_locator.dart';
-import 'core/global/theme/theme_data/theme_data_light.dart'; // Import the light theme
+import 'core/global/theme/theme_data/theme_data_light.dart';
 import 'core/global/theme/theme_data/theme_data_dark.dart';
-import 'movies/presentation/screens/movies_screen.dart';  // Import the dark theme
 
 void main() {
   ServiceLocator().init();
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => ThemeNotifier(),
+        ),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
-class MyApp extends StatefulWidget {
+class ThemeNotifier extends ChangeNotifier {
+  ThemeMode _themeMode = ThemeMode.system;
+
+  ThemeMode get themeMode => _themeMode;
+
+  void toggleTheme(ThemeMode themeMode) {
+    _themeMode = themeMode;
+    notifyListeners();
+  }
+}
+
+class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
-  _MyAppState createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  ThemeMode _themeMode = ThemeMode.system; // Start with the system theme mode
-
-  @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: AppStrings.appName,
-      theme: lightTheme,           // Light theme data
-      darkTheme: darkTheme,        // Dark theme data
-      themeMode: _themeMode,       // Control the theme mode
-      home: MoviesScreen(onThemeChanged: _toggleTheme),
+    return Consumer<ThemeNotifier>(
+      builder: (context, themeNotifier, child) {
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: AppStrings.appName,
+          theme: lightTheme,
+          darkTheme: darkTheme,
+          themeMode: themeNotifier.themeMode,
+          home: const SplashView(),
+        );
+      },
     );
-  }
-  void _toggleTheme(ThemeMode themeMode) {
-    setState(() {
-      _themeMode = themeMode;
-    });
   }
 }

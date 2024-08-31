@@ -8,6 +8,7 @@ import 'package:movie_app/movies/presentation/controllers/movies_state.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../core/network/api_constance.dart';
+import '../screens/movie_detail_screen.dart';
 
 class TopRatedMovies extends StatelessWidget {
   const TopRatedMovies({super.key});
@@ -44,7 +45,11 @@ class TopRatedMovies extends StatelessWidget {
                       padding: const EdgeInsets.only(right: 8.0),
                       child: InkWell(
                         onTap: () {
-                          /// TODO : NAVIGATE TO  MOVIE DETAILS
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => MovieDetailScreen(id: movie.id),
+                            ),
+                          );
                         },
                         child: ClipRRect(
                           borderRadius:
