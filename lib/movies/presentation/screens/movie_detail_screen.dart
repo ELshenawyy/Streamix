@@ -258,25 +258,37 @@ class MovieDetailContent extends StatelessWidget {
             return FadeInUp(
               from: 20,
               duration: const Duration(milliseconds: 500),
-              child: ClipRRect(
-                borderRadius: const BorderRadius.all(Radius.circular(4.0)),
-                child: CachedNetworkImage(
-                  imageUrl: ApiConstance.imageUrl(recommendation.backdropPath!),
-                  placeholder: (context, url) => Shimmer.fromColors(
-                    baseColor: Colors.grey[850]!,
-                    highlightColor: Colors.grey[800]!,
-                    child: Container(
-                      height: 170.0,
-                      width: 120.0,
-                      decoration: BoxDecoration(
-                        color: Colors.black,
-                        borderRadius: BorderRadius.circular(8.0),
+              child: InkWell(
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          MovieDetailScreen(id: recommendation.id),
+                    ),
+                  );
+                },
+                child: ClipRRect(
+                  borderRadius: const BorderRadius.all(Radius.circular(4.0)),
+                  child: CachedNetworkImage(
+                    imageUrl:
+                        ApiConstance.imageUrl(recommendation.backdropPath!),
+                    placeholder: (context, url) => Shimmer.fromColors(
+                      baseColor: Colors.grey[850]!,
+                      highlightColor: Colors.grey[800]!,
+                      child: Container(
+                        height: 170.0,
+                        width: 120.0,
+                        decoration: BoxDecoration(
+                          color: Colors.black,
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
                       ),
                     ),
+                    errorWidget: (context, url, error) =>
+                        const Icon(Icons.error),
+                    height: 180.0,
+                    fit: BoxFit.cover,
                   ),
-                  errorWidget: (context, url, error) => const Icon(Icons.error),
-                  height: 180.0,
-                  fit: BoxFit.cover,
                 ),
               ),
             );
