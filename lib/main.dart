@@ -1,13 +1,18 @@
-// In your main.dart or another setup file
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:movie_app/favourits/presentation/manager/favoutite_screen_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:movie_app/core/utils/app_strings.dart';
 import 'Splash/presentation/views/splash_view.dart';
+import 'core/global/theme/manager/theme_notifier.dart';
 import 'core/services/service_locator.dart';
 import 'core/global/theme/theme_data/theme_data_light.dart';
 import 'core/global/theme/theme_data/theme_data_dark.dart';
+import 'curved_navigation_bar/presentaion/manager/navigation_provider.dart';
 
-void main() {
+void main() async {
+  await ScreenUtil.ensureScreenSize();
+
   ServiceLocator().init();
   runApp(
     MultiProvider(
@@ -15,22 +20,19 @@ void main() {
         ChangeNotifierProvider(
           create: (_) => ThemeNotifier(),
         ),
+        ChangeNotifierProvider(
+          create: (_) => NavigationProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => FavoriteMovieProvider(),
+        )
       ],
       child: const MyApp(),
     ),
   );
 }
 
-class ThemeNotifier extends ChangeNotifier {
-  ThemeMode _themeMode = ThemeMode.system;
 
-  ThemeMode get themeMode => _themeMode;
-
-  void toggleTheme(ThemeMode themeMode) {
-    _themeMode = themeMode;
-    notifyListeners();
-  }
-}
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -39,6 +41,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<ThemeNotifier>(
       builder: (context, themeNotifier, child) {
+        ScreenUtil.init(context);
+
         return MaterialApp(
           debugShowCheckedModeBanner: false,
           title: AppStrings.appName,

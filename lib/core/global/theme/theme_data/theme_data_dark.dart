@@ -7,7 +7,7 @@ final ThemeData darkTheme = ThemeData(
   primaryColor: AppColorsDark.primaryColor,
   dialogBackgroundColor: AppColorsDark.backgroundColor,
   scaffoldBackgroundColor: AppColorsDark.backgroundColor,
-  textTheme: TextTheme(
+  textTheme: const TextTheme(
     bodyLarge: TextStyle(color: AppColorsDark.textColor),
     bodyMedium: TextStyle(color: AppColorsDark.textColor),
   ),

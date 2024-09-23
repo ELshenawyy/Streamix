@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movie_app/movies/presentation/screens/popular_and_topRated_movies_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:movie_app/core/utils/app_strings.dart';
 import 'package:movie_app/movies/presentation/controllers/movies_bloc.dart';
 import 'package:movie_app/movies/presentation/controllers/movies_events.dart';
+import '../../../core/global/theme/manager/theme_notifier.dart';
 import '../../../core/services/service_locator.dart';
-import '../../../main.dart';
 import '../component/now_playing_component.dart';
 import '../component/popular_movies_component.dart';
-import '../component/top_rated_movies.dart';
+import '../component/top_rated_movies_component.dart';
 
 class MoviesScreen extends StatelessWidget {
   const MoviesScreen({super.key});
@@ -31,14 +32,17 @@ class MoviesScreen extends StatelessWidget {
               stretch: true,
               automaticallyImplyLeading: false,
               flexibleSpace: const FlexibleSpaceBar(
-                titlePadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
+                titlePadding:
+                    EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
                 title: Text('Movies'),
               ),
               actions: [
                 Switch(
-                  value: Provider.of<ThemeNotifier>(context).themeMode == ThemeMode.dark,
+                  value: Provider.of<ThemeNotifier>(context).themeMode ==
+                      ThemeMode.dark,
                   onChanged: (value) {
-                    Provider.of<ThemeNotifier>(context, listen: false).toggleTheme(
+                    Provider.of<ThemeNotifier>(context, listen: false)
+                        .toggleTheme(
                       value ? ThemeMode.dark : ThemeMode.light,
                     );
                   },
@@ -60,7 +64,13 @@ class MoviesScreen extends StatelessWidget {
                         ),
                         InkWell(
                           onTap: () {
-                            /// TODO : NAVIGATION TO POPULAR SCREEN
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    const PopularAndTopRatedMoviesScreen(
+                                        isPopular: true),
+                              ),
+                            );
                           },
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
@@ -68,7 +78,8 @@ class MoviesScreen extends StatelessWidget {
                               children: [
                                 Text(
                                   AppStrings.seeMore,
-                                  style: Theme.of(context).textTheme.titleMedium,
+                                  style:
+                                      Theme.of(context).textTheme.titleMedium,
                                 ),
                                 const Icon(
                                   Icons.arrow_forward_ios,
@@ -93,7 +104,13 @@ class MoviesScreen extends StatelessWidget {
                         ),
                         InkWell(
                           onTap: () {
-                            /// TODO : NAVIGATION TO Top Rated Movies Screen
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    const PopularAndTopRatedMoviesScreen(
+                                        isPopular: false),
+                              ),
+                            );
                           },
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
@@ -101,7 +118,8 @@ class MoviesScreen extends StatelessWidget {
                               children: [
                                 Text(
                                   AppStrings.seeMore,
-                                  style: Theme.of(context).textTheme.titleMedium,
+                                  style:
+                                      Theme.of(context).textTheme.titleMedium,
                                 ),
                                 const Icon(
                                   Icons.arrow_forward_ios,
@@ -121,6 +139,7 @@ class MoviesScreen extends StatelessWidget {
             ),
           ],
         ),
+
       ),
     );
   }

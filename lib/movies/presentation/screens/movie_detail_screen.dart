@@ -1,4 +1,5 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:provider/provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,6 +14,7 @@ import 'package:movie_app/movies/presentation/controllers/movie_details_state.da
 import 'package:shimmer/shimmer.dart';
 
 import '../../../core/network/api_constance.dart';
+import '../../../favourits/presentation/manager/favoutite_screen_provider.dart';
 import '../../domain/entities/genres.dart';
 
 class MovieDetailScreen extends StatelessWidget {
@@ -46,6 +48,7 @@ class MovieDetailContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<MovieDetailsBloc, MovieDetailsState>(
       builder: (context, state) {
+
         switch (state.moviesDetailsState) {
           case RequestState.loading:
             return const Center(
@@ -151,13 +154,40 @@ class MovieDetailContent extends StatelessWidget {
                                       letterSpacing: 1.2,
                                     ),
                                   ),
+                                   SizedBox(width:MediaQuery.sizeOf(context).width * 0.18),
+
+                                  IconButton(
+                                    icon: Icon(
+                                      Provider.of<FavoriteMovieProvider>(context)
+                                          .isFavoriteMovie(state.moviesDetails!.id.toString())
+                                          ? Icons.favorite
+                                          : Icons.favorite_border_rounded,
+                                      color: Colors.red,
+                                    ),
+                                    onPressed: () async {
+                                      final favoriteMovieProvider =
+                                      Provider.of<FavoriteMovieProvider>(
+                                          context,
+                                          listen: false);
+                                      if (favoriteMovieProvider
+                                          .isFavoriteMovie(state.moviesDetails!.id.toString())) {
+                                        favoriteMovieProvider
+                                            .removeFavoriteMovie(state.moviesDetails!.id.toString());
+                                      } else {
+                                        favoriteMovieProvider.addFavoriteMovie(
+                                          state.moviesDetails!.id.toString(),
+                                          state.moviesDetails!.title!,
+                                          state.moviesDetails!.backdropPath ?? '',
+                                        );
+                                      }
+                                    },
+                                  ),
                                 ],
                               ),
                               const SizedBox(width: 16.0),
                               Text(
                                 _showDuration(state.moviesDetails!.runtime),
                                 style: const TextStyle(
-                                  color: Colors.white70,
                                   fontSize: 16.0,
                                   fontWeight: FontWeight.w500,
                                   letterSpacing: 1.2,
