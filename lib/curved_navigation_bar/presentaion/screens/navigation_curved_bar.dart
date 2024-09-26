@@ -6,6 +6,7 @@ import 'package:movie_app/movies/presentation/screens/movies_screen.dart';
 import 'package:provider/provider.dart';
 import '../../../core/utils/styles.dart';
 import '../../../favourits/presentation/favoutite_screen.dart';
+import '../../../search/presentation/screens/search_view.dart';
 import '../manager/navigation_provider.dart';
 
 class CurvedNavigationBarScreen extends StatefulWidget {
@@ -22,6 +23,7 @@ class _CurvedNavigationBarScreenState extends State<CurvedNavigationBarScreen> {
   final List<Widget> _screens = <Widget>[
     const MoviesScreen(),
     FavoriteScreen(),
+    const SearchView(),
   ];
 
   @override
@@ -55,10 +57,10 @@ class _CurvedNavigationBarScreenState extends State<CurvedNavigationBarScreen> {
           ),
           CurvedNavigationBarItem(
             child: Icon(
-              Icons.perm_identity,
+              Icons.search,
               size: 24.sp,
             ),
-            label: 'Profile',
+            label: 'Search',
             labelStyle: AppStyles.style6(context),
           ),
         ],
