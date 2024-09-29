@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:movie_app/core/utils/assets.dart';
-import 'package:movie_app/movies/presentation/screens/movies_screen.dart';
-
 import '../../../../curved_navigation_bar/presentaion/screens/navigation_curved_bar.dart';
 
 class SplashViewBody extends StatefulWidget {
   const SplashViewBody({super.key});
 
+
   @override
   State<SplashViewBody> createState() => _SplashViewBodyState();
+
 }
 
 class _SplashViewBodyState extends State<SplashViewBody>
@@ -66,6 +66,9 @@ class _SplashViewBodyState extends State<SplashViewBody>
 
   @override
   Widget build(BuildContext context) {
+
+    final textTheme = Theme.of(context).textTheme.bodyMedium?.color ?? Colors.black;
+
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: Center(
@@ -90,7 +93,7 @@ class _SplashViewBodyState extends State<SplashViewBody>
                   style: TextStyle(
                     fontSize: 26,
                     fontWeight: FontWeight.bold,
-                    color: Colors.black.withOpacity(0.6),
+                    color: textTheme.withOpacity(0.6),
                   ),
                 ),
               ),
