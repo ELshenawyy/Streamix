@@ -9,7 +9,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../core/services/service_locator.dart';
-import '../../../favourits/presentation/manager/favoutite_screen_provider.dart';
+import '../../../favourits/presentation/controller/favoutite_screen_provider.dart';
 import '../controllers/movies_events.dart';
 import 'movie_detail_screen.dart';
 
@@ -65,7 +65,7 @@ class PopularAndTopRatedMoviesScreen extends StatelessWidget {
                         onTap: () {
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) =>
-                                  MovieDetailScreen(id: movie.id!)));
+                                  MovieDetailScreen(id: movie.id)));
                         },
                         child: Stack(
                           children: [
@@ -73,8 +73,9 @@ class PopularAndTopRatedMoviesScreen extends StatelessWidget {
                               borderRadius: BorderRadius.circular(8.0),
                               child: CachedNetworkImage(
                                 height: MediaQuery.of(context).size.height,
+                                // ignore: unnecessary_null_comparison
                                 imageUrl: movie.backdropPath != null
-                                    ? ApiConstance.imageUrl(movie.backdropPath!)
+                                    ? ApiConstance.imageUrl(movie.backdropPath)
                                     : 'https://via.placeholder.com/150', // Fallback image URL
                                 fit: BoxFit.cover,
                                 placeholder: (context, url) =>
@@ -106,13 +107,13 @@ class PopularAndTopRatedMoviesScreen extends StatelessWidget {
                                       context,
                                       listen: false);
                                   if (favoriteMovieProvider
-                                      .isFavoriteMovie(movie.id!.toString())) {
+                                      .isFavoriteMovie(movie.id.toString())) {
                                     favoriteMovieProvider
-                                        .removeFavoriteMovie(movie.id!.toString());
+                                        .removeFavoriteMovie(movie.id.toString());
                                   } else {
                                     favoriteMovieProvider.addFavoriteMovie(
-                                      movie.id!.toString(),
-                                      movie.title!,
+                                      movie.id.toString(),
+                                      movie.title,
                                       movie.backdropPath ?? '',
                                     );
                                   }

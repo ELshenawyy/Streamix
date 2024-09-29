@@ -14,7 +14,7 @@ import 'package:movie_app/movies/presentation/controllers/movie_details_state.da
 import 'package:shimmer/shimmer.dart';
 
 import '../../../core/network/api_constance.dart';
-import '../../../favourits/presentation/manager/favoutite_screen_provider.dart';
+import '../../../favourits/presentation/controller/favoutite_screen_provider.dart';
 import '../../domain/entities/genres.dart';
 
 class MovieDetailScreen extends StatelessWidget {

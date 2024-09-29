@@ -1,15 +1,13 @@
-
 import 'package:flutter/material.dart';
 
 import '../../../core/sqfliteServices/sqflite_services.dart';
 
-
 class FavoriteMovieProvider extends ChangeNotifier {
-  List<Map<dynamic, dynamic>>? _favoriteMovie = [];
+  List<Map<String, dynamic>>? _favoriteMovie = [];
 
-  List<Map<dynamic, dynamic>>? get favoriteMovie => _favoriteMovie;
+  List<Map<String, dynamic>>? get favoriteMovie => _favoriteMovie;
 
-  set favoriteMovie(List<Map<dynamic, dynamic>>? value) {
+  set favoriteMovie(List<Map<String, dynamic>>? value) {
     _favoriteMovie = value;
     notifyListeners();
   }
@@ -27,8 +25,8 @@ class FavoriteMovieProvider extends ChangeNotifier {
     await SqfliteServices().deleteData(id: id);
     await fetchFavoriteMovie();
   }
+
   bool isFavoriteMovie(String id) {
     return favoriteMovie?.any((element) => element['id'] == id) ?? false;
   }
-
 }
