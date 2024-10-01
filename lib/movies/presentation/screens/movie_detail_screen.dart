@@ -1,4 +1,5 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:movie_app/watch_movies/screens/watch_movies.dart';
 import 'package:provider/provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -48,7 +49,6 @@ class MovieDetailContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<MovieDetailsBloc, MovieDetailsState>(
       builder: (context, state) {
-
         switch (state.moviesDetailsState) {
           case RequestState.loading:
             return const Center(
@@ -100,12 +100,36 @@ class MovieDetailContent extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(state.moviesDetails!.title,
-                              style: GoogleFonts.poppins(
-                                fontSize: 23,
-                                fontWeight: FontWeight.w700,
-                                letterSpacing: 1.2,
-                              )),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                state.moviesDetails!.title,
+                                style: GoogleFonts.poppins(
+                                  fontSize: 23,
+                                  fontWeight: FontWeight.w700,
+                                  letterSpacing: 1.2,
+                                ),
+                              ),
+                              InkWell(
+                                child: const Icon(
+                                  Icons.play_circle_outline,
+                                  size: 32,
+                                  color: Colors.red,
+                                ),
+                                onTap: () {
+                                  // Navigate to WatchMovieScreen with the movie ID
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => WatchMovieScreen(
+                                          movieId: state.moviesDetails!.id),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ],
+                          ),
                           const SizedBox(height: 8.0),
                           Row(
                             children: [
@@ -154,30 +178,37 @@ class MovieDetailContent extends StatelessWidget {
                                       letterSpacing: 1.2,
                                     ),
                                   ),
-                                   SizedBox(width:MediaQuery.sizeOf(context).width * 0.18),
-
+                                  SizedBox(
+                                      width: MediaQuery.sizeOf(context).width *
+                                          0.18),
                                   IconButton(
                                     icon: Icon(
-                                      Provider.of<FavoriteMovieProvider>(context)
-                                          .isFavoriteMovie(state.moviesDetails!.id.toString())
+                                      Provider.of<FavoriteMovieProvider>(
+                                                  context)
+                                              .isFavoriteMovie(state
+                                                  .moviesDetails!.id
+                                                  .toString())
                                           ? Icons.favorite
                                           : Icons.favorite_border_rounded,
                                       color: Colors.red,
                                     ),
                                     onPressed: () async {
                                       final favoriteMovieProvider =
-                                      Provider.of<FavoriteMovieProvider>(
-                                          context,
-                                          listen: false);
-                                      if (favoriteMovieProvider
-                                          .isFavoriteMovie(state.moviesDetails!.id.toString())) {
+                                          Provider.of<FavoriteMovieProvider>(
+                                              context,
+                                              listen: false);
+                                      if (favoriteMovieProvider.isFavoriteMovie(
+                                          state.moviesDetails!.id.toString())) {
                                         favoriteMovieProvider
-                                            .removeFavoriteMovie(state.moviesDetails!.id.toString());
+                                            .removeFavoriteMovie(state
+                                                .moviesDetails!.id
+                                                .toString());
                                       } else {
                                         favoriteMovieProvider.addFavoriteMovie(
                                           state.moviesDetails!.id.toString(),
-                                          state.moviesDetails!.title!,
-                                          state.moviesDetails!.backdropPath ?? '',
+                                          state.moviesDetails!.title,
+                                          state.moviesDetails!.backdropPath ??
+                                              '',
                                         );
                                       }
                                     },

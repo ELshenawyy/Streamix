@@ -12,7 +12,9 @@ import '../component/popular_movies_component.dart';
 import '../component/top_rated_movies_component.dart';
 
 class MoviesScreen extends StatelessWidget {
-  const MoviesScreen({super.key});
+  final int movieId;
+
+  const MoviesScreen({super.key,  this.movieId = 1});
 
   @override
   Widget build(BuildContext context) {
