@@ -103,12 +103,17 @@ class MovieDetailContent extends StatelessWidget {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(
-                                state.moviesDetails!.title,
-                                style: GoogleFonts.poppins(
-                                  fontSize: 23,
-                                  fontWeight: FontWeight.w700,
-                                  letterSpacing: 1.2,
+                              Container(
+                                width: 280,
+                                child: Text(
+                                  state.moviesDetails!.title,
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 23,
+                                    fontWeight: FontWeight.w700,
+                                    letterSpacing: 1.2,
+                                  ),
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
                                 ),
                               ),
                               InkWell(
@@ -145,9 +150,10 @@ class MovieDetailContent extends StatelessWidget {
                                 child: Text(
                                   state.moviesDetails!.releaseDate
                                       .split('-')[0],
-                                  style: const TextStyle(
+                                  style:  const TextStyle(
                                     fontSize: 16.0,
                                     fontWeight: FontWeight.w500,
+
                                   ),
                                 ),
                               ),
@@ -161,7 +167,7 @@ class MovieDetailContent extends StatelessWidget {
                                   ),
                                   const SizedBox(width: 4.0),
                                   Text(
-                                    (state.moviesDetails!.voteAverage / 2)
+                                    (state.moviesDetails!.voteAverage)
                                         .toStringAsFixed(1),
                                     style: const TextStyle(
                                       fontSize: 16.0,
@@ -169,18 +175,8 @@ class MovieDetailContent extends StatelessWidget {
                                       letterSpacing: 1.2,
                                     ),
                                   ),
-                                  const SizedBox(width: 4.0),
-                                  Text(
-                                    '(${state.moviesDetails!.voteAverage})',
-                                    style: const TextStyle(
-                                      fontSize: 1.0,
-                                      fontWeight: FontWeight.w500,
-                                      letterSpacing: 1.2,
-                                    ),
-                                  ),
-                                  SizedBox(
-                                      width: MediaQuery.sizeOf(context).width *
-                                          0.18),
+
+
                                   IconButton(
                                     icon: Icon(
                                       Provider.of<FavoriteMovieProvider>(
@@ -191,6 +187,7 @@ class MovieDetailContent extends StatelessWidget {
                                           ? Icons.favorite
                                           : Icons.favorite_border_rounded,
                                       color: Colors.red,
+                                      size: 28,
                                     ),
                                     onPressed: () async {
                                       final favoriteMovieProvider =
@@ -215,7 +212,7 @@ class MovieDetailContent extends StatelessWidget {
                                   ),
                                 ],
                               ),
-                              const SizedBox(width: 16.0),
+                               SizedBox(width:MediaQuery.of(context).size.width * 0.25),
                               Text(
                                 _showDuration(state.moviesDetails!.runtime),
                                 style: const TextStyle(
@@ -228,7 +225,7 @@ class MovieDetailContent extends StatelessWidget {
                           ),
                           const SizedBox(height: 20.0),
                           Text(
-                            state.moviesDetails!.overview,
+                            '${state.moviesDetails!.overview.substring(0,170)}...',
                             style: const TextStyle(
                               fontSize: 14.0,
                               fontWeight: FontWeight.w400,
@@ -238,8 +235,7 @@ class MovieDetailContent extends StatelessWidget {
                           const SizedBox(height: 8.0),
                           Text(
                             '${AppStrings.genres}: ${_showGenres(state.moviesDetails!.genres)}',
-                            style: const TextStyle(
-                              color: Colors.white70,
+                            style:  const TextStyle(
                               fontSize: 12.0,
                               fontWeight: FontWeight.w500,
                               letterSpacing: 1.2,

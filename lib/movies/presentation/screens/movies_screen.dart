@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:movie_app/movies/presentation/screens/popular_and_topRated_movies_screen.dart';
+import 'package:movie_app/movies/presentation/screens/popular_screen.dart';
 import 'package:movie_app/core/utils/app_strings.dart';
 import 'package:movie_app/movies/presentation/controllers/movies_bloc.dart';
 import 'package:movie_app/movies/presentation/controllers/movies_events.dart';
+import 'package:movie_app/movies/presentation/screens/top_rated_screen.dart';
 import '../../../core/services/service_locator.dart';
 import '../component/now_playing_component.dart';
 import '../component/popular_movies_component.dart';
@@ -25,13 +26,13 @@ class MoviesScreen extends StatelessWidget {
         body: CustomScrollView(
           key: const Key('movieScrollView'),
           slivers: [
-            SliverAppBar(
+            const SliverAppBar(
               expandedHeight: 60.0,
               floating: false,
               pinned: false,
               stretch: true,
               automaticallyImplyLeading: false,
-              flexibleSpace: const FlexibleSpaceBar(
+              flexibleSpace: FlexibleSpaceBar(
                 titlePadding:
                     EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
                 title: Text('Movies'),
@@ -56,8 +57,7 @@ class MoviesScreen extends StatelessWidget {
                             Navigator.of(context).push(
                               MaterialPageRoute(
                                 builder: (context) =>
-                                    const PopularAndTopRatedMoviesScreen(
-                                        isPopular: true),
+                                    const PopularMoviesScreen(),
                               ),
                             );
                           },
@@ -96,8 +96,7 @@ class MoviesScreen extends StatelessWidget {
                             Navigator.of(context).push(
                               MaterialPageRoute(
                                 builder: (context) =>
-                                    const PopularAndTopRatedMoviesScreen(
-                                        isPopular: false),
+                                    const TopRatedMoviesScreen(),
                               ),
                             );
                           },
