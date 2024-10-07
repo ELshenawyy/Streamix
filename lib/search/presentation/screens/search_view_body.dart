@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_app/search/presentation/screens/widgets/search_bar_items.dart';
 import 'package:movie_app/search/presentation/screens/widgets/search_results.dart';
-import 'package:movie_app/search/presentation/screens/widgets/search_title_list_view.dart';
 
 import '../../../core/global/resources/font_manager.dart';
 import '../../../core/global/resources/strings_manger.dart';
@@ -11,7 +10,6 @@ import '../../../core/global/resources/values_manager.dart';
 import '../controller/search_bloc.dart';
 import '../controller/search_events.dart';
 import '../controller/search_state.dart';
-
 
 class SearchViewBody extends StatefulWidget {
   const SearchViewBody({super.key});
@@ -112,13 +110,6 @@ class SearchViewBodyState extends State<SearchViewBody> {
             focusNode: _focusNode,
           ),
           const SizedBox(height: AppSize.s8),
-          SizedBox(
-            height: AppSize.s50,
-            child: SearchTitleListView(
-              onSearchTypeChanged: onSearchTypeChanged,
-            ),
-          ),
-          const SizedBox(height: AppSize.s16),
           const Divider(
             height: AppSize.s1,
             thickness: AppSize.s1,
@@ -126,11 +117,11 @@ class SearchViewBodyState extends State<SearchViewBody> {
           Expanded(
             child: _showNoDataMessage
                 ? Center(
-              child: Text(
-                AppString.noResultsFound,
-                style: getMediumStyle(fontSize: FontSize.s16),
-              ),
-            )
+                    child: Text(
+                      AppString.noResultsFound,
+                      style: getMediumStyle(fontSize: FontSize.s16),
+                    ),
+                  )
                 : const SearchResults(),
           ),
         ],

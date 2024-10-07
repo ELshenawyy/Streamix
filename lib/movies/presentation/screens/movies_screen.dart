@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movie_app/movies/presentation/screens/popular_and_topRated_movies_screen.dart';
-import 'package:provider/provider.dart';
 import 'package:movie_app/core/utils/app_strings.dart';
 import 'package:movie_app/movies/presentation/controllers/movies_bloc.dart';
 import 'package:movie_app/movies/presentation/controllers/movies_events.dart';
-import '../../../core/global/theme/manager/theme_notifier.dart';
 import '../../../core/services/service_locator.dart';
 import '../component/now_playing_component.dart';
 import '../component/popular_movies_component.dart';
@@ -14,7 +12,7 @@ import '../component/top_rated_movies_component.dart';
 class MoviesScreen extends StatelessWidget {
   final int movieId;
 
-  const MoviesScreen({super.key,  this.movieId = 1});
+  const MoviesScreen({super.key, this.movieId = 1});
 
   @override
   Widget build(BuildContext context) {
@@ -38,18 +36,7 @@ class MoviesScreen extends StatelessWidget {
                     EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
                 title: Text('Movies'),
               ),
-              actions: [
-                Switch(
-                  value: Provider.of<ThemeNotifier>(context).themeMode ==
-                      ThemeMode.dark,
-                  onChanged: (value) {
-                    Provider.of<ThemeNotifier>(context, listen: false)
-                        .toggleTheme(
-                      value ? ThemeMode.dark : ThemeMode.light,
-                    );
-                  },
-                ),
-              ],
+
             ),
             SliverList(
               delegate: SliverChildListDelegate(
@@ -141,7 +128,6 @@ class MoviesScreen extends StatelessWidget {
             ),
           ],
         ),
-
       ),
     );
   }

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:movie_app/settings/presentation/controllers/manager/theme_notifier.dart';
 import 'package:provider/provider.dart';
 import 'package:movie_app/core/utils/app_strings.dart';
 import 'Splash/presentation/views/splash_view.dart';
-import 'core/global/theme/manager/theme_notifier.dart';
 import 'core/services/service_locator.dart';
 import 'core/global/theme/theme_data/theme_data_light.dart';
 import 'core/global/theme/theme_data/theme_data_dark.dart';

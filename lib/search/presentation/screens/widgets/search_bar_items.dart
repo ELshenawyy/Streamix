@@ -27,7 +27,7 @@ class SearchBarItems extends StatelessWidget {
             child: TextField(
               focusNode: focusNode,
               controller: controller,
-              cursorColor: AppColors.gold,
+              cursorColor: AppColors.red,
               style: getMediumStyle(fontSize:16).copyWith(
                 color: AppColors.black,
               ),

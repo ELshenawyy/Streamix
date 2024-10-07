@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import '../../../core/utils/styles.dart';
 import '../../../favourits/presentation/favoutite_screen.dart';
 import '../../../search/presentation/screens/search_view.dart';
+import '../../../settings/presentation/screens/settings_view_body.dart';
 import '../manager/navigation_provider.dart';
 
 class CurvedNavigationBarScreen extends StatefulWidget {
@@ -24,6 +25,8 @@ class _CurvedNavigationBarScreenState extends State<CurvedNavigationBarScreen> {
     const MoviesScreen(),
     FavoriteScreen(),
     const SearchView(),
+    const SettingsViewBody(),
+
   ];
 
   @override
@@ -31,7 +34,7 @@ class _CurvedNavigationBarScreenState extends State<CurvedNavigationBarScreen> {
     return Scaffold(
       body: _screens[Provider.of<NavigationProvider>(context).currentPageIndex],
       bottomNavigationBar: CurvedNavigationBar(
-        height: 60.h,
+        height: 70.h,
         backgroundColor: const Color(0xffEB5757),
         key: _bottomNavigationKey,
         animationCurve: Easing.legacyDecelerate,
@@ -61,6 +64,14 @@ class _CurvedNavigationBarScreenState extends State<CurvedNavigationBarScreen> {
               size: 24.sp,
             ),
             label: 'Search',
+            labelStyle: AppStyles.style6(context),
+          ),
+          CurvedNavigationBarItem(
+            child: Icon(
+              Icons.settings,
+              size: 24.sp,
+            ),
+            label: 'Settings',
             labelStyle: AppStyles.style6(context),
           ),
         ],

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:movie_app/core/global/theme/manager/theme_data_base.dart';
+import 'package:movie_app/settings/presentation/controllers/manager/theme_data_base.dart';
 
 class ThemeNotifier extends ChangeNotifier {
   ThemeMode _themeMode = ThemeMode.system;
