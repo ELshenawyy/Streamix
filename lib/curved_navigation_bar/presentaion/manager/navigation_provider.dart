@@ -6,7 +6,6 @@ class NavigationProvider extends ChangeNotifier {
   int get currentPageIndex => _currentPageIndex;
 
   void setCurrentPageIndex(int index) {
-    print("Current Page Index set to: $index"); // Debug print
     _currentPageIndex = index;
     notifyListeners();
   }

@@ -20,7 +20,7 @@ class NowPlayingComponent extends StatelessWidget {
       switch (state.nowPlayingState) {
         case RequestState.loading:
           return const SizedBox(
-            height: 400,
+            height: 350,
             child: Center(
               child: CircularProgressIndicator(),
             ),
@@ -31,7 +31,7 @@ class NowPlayingComponent extends StatelessWidget {
             duration: const Duration(milliseconds: 500),
             child: CarouselSlider(
               options: CarouselOptions(
-                height: 400.0,
+                height: 350.0,
                 viewportFraction: 1.0,
               ),
               items: state.nowPlayingMovies.map(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movie_app/movies/presentation/screens/popular_screen.dart';
 import 'package:movie_app/core/utils/app_strings.dart';
 import 'package:movie_app/movies/presentation/controllers/movies_bloc.dart';
@@ -26,18 +27,18 @@ class MoviesScreen extends StatelessWidget {
         body: CustomScrollView(
           key: const Key('movieScrollView'),
           slivers: [
-            const SliverAppBar(
-              expandedHeight: 60.0,
+            SliverAppBar(
+              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+              expandedHeight: 60.0.sp,
               floating: false,
               pinned: false,
               stretch: true,
               automaticallyImplyLeading: false,
-              flexibleSpace: FlexibleSpaceBar(
+              flexibleSpace: const FlexibleSpaceBar(
                 titlePadding:
                     EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
                 title: Text('Movies'),
               ),
-
             ),
             SliverList(
               delegate: SliverChildListDelegate(
@@ -62,7 +63,7 @@ class MoviesScreen extends StatelessWidget {
                             );
                           },
                           child: Padding(
-                            padding: const EdgeInsets.all(8.0),
+                            padding:  EdgeInsets.all(8.0.sp),
                             child: Row(
                               children: [
                                 Text(
@@ -109,9 +110,9 @@ class MoviesScreen extends StatelessWidget {
                                   style:
                                       Theme.of(context).textTheme.titleMedium,
                                 ),
-                                const Icon(
+                                 Icon(
                                   Icons.arrow_forward_ios,
-                                  size: 16.0,
+                                  size: 16.0.sp,
                                 ),
                               ],
                             ),

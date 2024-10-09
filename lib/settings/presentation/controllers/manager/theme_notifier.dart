@@ -31,8 +31,8 @@ class ThemeNotifier extends ChangeNotifier {
     String themeString = themeMode == ThemeMode.light
         ? 'light'
         : themeMode == ThemeMode.dark
-        ? 'dark'
-        : 'system';
+            ? 'dark'
+            : 'system';
 
     await ThemeDatabase().insertTheme(themeString);
   }

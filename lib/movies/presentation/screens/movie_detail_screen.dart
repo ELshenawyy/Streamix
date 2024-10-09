@@ -41,9 +41,7 @@ class MovieDetailScreen extends StatelessWidget {
 }
 
 class MovieDetailContent extends StatelessWidget {
-  const MovieDetailContent({
-    super.key,
-  });
+  const MovieDetailContent({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -51,10 +49,13 @@ class MovieDetailContent extends StatelessWidget {
       builder: (context, state) {
         switch (state.moviesDetailsState) {
           case RequestState.loading:
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+            return const Center(child: CircularProgressIndicator());
           case RequestState.loaded:
+            final movieDetails = state.moviesDetails;
+            if (movieDetails == null) {
+              return const Center(child: Text("Movie details unavailable."));
+            }
+
             return CustomScrollView(
               key: const Key('movieDetailScrollView'),
               slivers: [
@@ -63,7 +64,7 @@ class MovieDetailContent extends StatelessWidget {
                   expandedHeight: 250.0,
                   flexibleSpace: FlexibleSpaceBar(
                     background: FadeIn(
-                      duration: const Duration(milliseconds: 500),
+                      duration: const Duration(milliseconds: 800),
                       child: ShaderMask(
                         shaderCallback: (rect) {
                           return const LinearGradient(
@@ -81,12 +82,24 @@ class MovieDetailContent extends StatelessWidget {
                           );
                         },
                         blendMode: BlendMode.dstIn,
-                        child: CachedNetworkImage(
-                          width: MediaQuery.of(context).size.width,
-                          imageUrl: ApiConstance.imageUrl(
-                              state.moviesDetails!.backdropPath),
-                          fit: BoxFit.cover,
-                        ),
+                        child: movieDetails.backdropPath != null
+                            ? CachedNetworkImage(
+                                width: MediaQuery.of(context).size.width,
+                                imageUrl: ApiConstance.imageUrl(
+                                    movieDetails.backdropPath),
+                                fit: BoxFit.cover,
+                              )
+                            : Container(
+                                width: MediaQuery.of(context).size.width,
+                                height: 250.0,
+                                color: Colors.grey,
+                                child: const Center(
+                                  child: Text(
+                                    'Image not available',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ),
+                              ),
                       ),
                     ),
                   ),
@@ -103,10 +116,10 @@ class MovieDetailContent extends StatelessWidget {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Container(
+                              SizedBox(
                                 width: 280,
                                 child: Text(
-                                  state.moviesDetails!.title,
+                                  movieDetails.title ?? 'Title Unavailable',
                                   style: GoogleFonts.poppins(
                                     fontSize: 23,
                                     fontWeight: FontWeight.w700,
@@ -123,14 +136,15 @@ class MovieDetailContent extends StatelessWidget {
                                   color: Colors.red,
                                 ),
                                 onTap: () {
-                                  // Navigate to WatchMovieScreen with the movie ID
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => WatchMovieScreen(
-                                          movieId: state.moviesDetails!.id),
-                                    ),
-                                  );
+                                  if (movieDetails.id != null) {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => WatchMovieScreen(
+                                            movieId: movieDetails.id),
+                                      ),
+                                    );
+                                  }
                                 },
                               ),
                             ],
@@ -148,73 +162,68 @@ class MovieDetailContent extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(4.0),
                                 ),
                                 child: Text(
-                                  state.moviesDetails!.releaseDate
-                                      .split('-')[0],
-                                  style:  const TextStyle(
+                                  movieDetails.releaseDate.split('-')[0] ??
+                                      'N/A',
+                                  style: const TextStyle(
                                     fontSize: 16.0,
                                     fontWeight: FontWeight.w500,
-
                                   ),
                                 ),
                               ),
                               const SizedBox(width: 16.0),
-                              Row(
-                                children: [
-                                  const Icon(
-                                    Icons.star,
-                                    color: Colors.amber,
-                                    size: 20.0,
+                              Row(children: [
+                                const Icon(
+                                  Icons.star,
+                                  color: Colors.amber,
+                                  size: 20.0,
+                                ),
+                                const SizedBox(width: 4.0),
+                                Text(
+                                  movieDetails.voteAverage != null
+                                      ? movieDetails.voteAverage
+                                          .toStringAsFixed(1)
+                                      : 'N/A',
+                                  style: const TextStyle(
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.w500,
+                                    letterSpacing: 1.2,
                                   ),
-                                  const SizedBox(width: 4.0),
-                                  Text(
-                                    (state.moviesDetails!.voteAverage)
-                                        .toStringAsFixed(1),
-                                    style: const TextStyle(
-                                      fontSize: 16.0,
-                                      fontWeight: FontWeight.w500,
-                                      letterSpacing: 1.2,
-                                    ),
-                                  ),
-
-
-                                  IconButton(
-                                    icon: Icon(
-                                      Provider.of<FavoriteMovieProvider>(
-                                                  context)
-                                              .isFavoriteMovie(state
-                                                  .moviesDetails!.id
-                                                  .toString())
-                                          ? Icons.favorite
-                                          : Icons.favorite_border_rounded,
-                                      color: Colors.red,
-                                      size: 28,
-                                    ),
-                                    onPressed: () async {
-                                      final favoriteMovieProvider =
-                                          Provider.of<FavoriteMovieProvider>(
-                                              context,
-                                              listen: false);
-                                      if (favoriteMovieProvider.isFavoriteMovie(
-                                          state.moviesDetails!.id.toString())) {
-                                        favoriteMovieProvider
-                                            .removeFavoriteMovie(state
+                                ),
+                                IconButton(
+                                  icon: Icon(
+                                    Provider.of<FavoriteMovieProvider>(context)
+                                            .isFavoriteMovie(state
                                                 .moviesDetails!.id
-                                                .toString());
-                                      } else {
-                                        favoriteMovieProvider.addFavoriteMovie(
-                                          state.moviesDetails!.id.toString(),
-                                          state.moviesDetails!.title,
-                                          state.moviesDetails!.backdropPath ??
-                                              '',
-                                        );
-                                      }
-                                    },
+                                                .toString())
+                                        ? Icons.favorite
+                                        : Icons.favorite_border_rounded,
+                                    color: Colors.red,
+                                    size: 28,
                                   ),
-                                ],
-                              ),
-                               SizedBox(width:MediaQuery.of(context).size.width * 0.25),
+                                  onPressed: () async {
+                                    final favoriteMovieProvider =
+                                        Provider.of<FavoriteMovieProvider>(
+                                            context,
+                                            listen: false);
+                                    if (favoriteMovieProvider.isFavoriteMovie(
+                                        state.moviesDetails!.id.toString())) {
+                                      favoriteMovieProvider.removeFavoriteMovie(
+                                          state.moviesDetails!.id.toString());
+                                    } else {
+                                      favoriteMovieProvider.addFavoriteMovie(
+                                        state.moviesDetails!.id.toString(),
+                                        state.moviesDetails!.title,
+                                        state.moviesDetails!.backdropPath ?? '',
+                                      );
+                                    }
+                                  },
+                                ),
+                              ]),
+                              SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.25),
                               Text(
-                                _showDuration(state.moviesDetails!.runtime),
+                                _showDuration(movieDetails.runtime),
                                 style: const TextStyle(
                                   fontSize: 16.0,
                                   fontWeight: FontWeight.w500,
@@ -225,20 +234,27 @@ class MovieDetailContent extends StatelessWidget {
                           ),
                           const SizedBox(height: 20.0),
                           Text(
-                            '${state.moviesDetails!.overview.substring(0,170)}...',
+                            '${movieDetails.overview ?? 'No overview available'}...', //TODO
                             style: const TextStyle(
                               fontSize: 14.0,
                               fontWeight: FontWeight.w400,
                               letterSpacing: 1.2,
                             ),
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 3,
                           ),
                           const SizedBox(height: 8.0),
                           Text(
-                            '${AppStrings.genres}: ${_showGenres(state.moviesDetails!.genres)}',
-                            style:  const TextStyle(
+                            '${AppStrings.genres}: ${_showGenres(movieDetails.genres)}',
+                            style:  TextStyle(
                               fontSize: 12.0,
                               fontWeight: FontWeight.w500,
                               letterSpacing: 1.2,
+                              color: Theme.of(context)
+                                  .textTheme
+                                  .titleSmall!
+                                  .color!
+                                  .withOpacity(0.6),
                             ),
                           ),
                         ],
@@ -247,117 +263,80 @@ class MovieDetailContent extends StatelessWidget {
                   ),
                 ),
                 SliverPadding(
-                  padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 24.0),
-                  sliver: SliverToBoxAdapter(
-                    child: FadeInUp(
-                      from: 20,
-                      duration: const Duration(milliseconds: 500),
-                      child: const Text(
-                        AppStrings.moreLikeThis,
-                        style: TextStyle(
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.w500,
-                          letterSpacing: 1.2,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                // Tab(text: 'More like this'.toUpperCase()),
-                SliverPadding(
-                  padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 24.0),
-                  sliver: _showRecommendations(),
+                  padding: const EdgeInsets.all(16.0),
+                  sliver: _showRecommendations(state),
                 ),
               ],
             );
-
           case RequestState.error:
-            ScaffoldMessenger.of(context)
-                .showSnackBar(SnackBar(content: Text("${RequestState.error}")));
+            return Center(
+              child: Text(state.moviesDetailsMessage),
+            );
         }
-        return Center(
-          child: Text(state.moviesDetailsMessage),
-        );
       },
     );
   }
 
   String _showGenres(List<Genres> genres) {
-    String result = '';
-    for (var genre in genres) {
-      result += '${genre.name}, ';
-    }
-
-    if (result.isEmpty) {
-      return result;
-    }
-
-    return result.substring(0, result.length - 2);
+    return genres.isNotEmpty
+        ? genres.map((genre) => genre.name).join(', ')
+        : 'No genres';
   }
 
   String _showDuration(int runtime) {
     final int hours = runtime ~/ 60;
     final int minutes = runtime % 60;
-
-    if (hours > 0) {
-      return '${hours}h ${minutes}m';
-    } else {
-      return '${minutes}m';
-    }
+    return hours > 0 ? '${hours}h ${minutes}m' : '${minutes}m';
   }
 
-  Widget _showRecommendations() {
-    return BlocBuilder<MovieDetailsBloc, MovieDetailsState>(
-      builder: (context, state) => SliverGrid(
-        delegate: SliverChildBuilderDelegate(
-          (context, index) {
-            final recommendation = state.moviesRecommendation[index];
-            return FadeInUp(
-              from: 20,
-              duration: const Duration(milliseconds: 500),
-              child: InkWell(
-                onTap: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          MovieDetailScreen(id: recommendation.id),
-                    ),
-                  );
-                },
-                child: ClipRRect(
-                  borderRadius: const BorderRadius.all(Radius.circular(4.0)),
-                  child: CachedNetworkImage(
-                    imageUrl:
-                        ApiConstance.imageUrl(recommendation.backdropPath!),
-                    placeholder: (context, url) => Shimmer.fromColors(
-                      baseColor: Colors.grey[850]!,
-                      highlightColor: Colors.grey[800]!,
-                      child: Container(
-                        height: 170.0,
-                        width: 120.0,
-                        decoration: BoxDecoration(
-                          color: Colors.black,
-                          borderRadius: BorderRadius.circular(8.0),
-                        ),
+  Widget _showRecommendations(MovieDetailsState state) {
+    return SliverGrid(
+      delegate: SliverChildBuilderDelegate(
+        (context, index) {
+          final recommendation = state.moviesRecommendation[index];
+          return FadeInUp(
+            from: 20,
+            duration: const Duration(milliseconds: 500),
+            child: InkWell(
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        MovieDetailScreen(id: recommendation.id),
+                  ),
+                );
+              },
+              child: ClipRRect(
+                borderRadius: const BorderRadius.all(Radius.circular(4.0)),
+                child: CachedNetworkImage(
+                  imageUrl: ApiConstance.imageUrl(recommendation.backdropPath!),
+                  placeholder: (context, url) => Shimmer.fromColors(
+                    baseColor: Colors.grey[850]!,
+                    highlightColor: Colors.grey[800]!,
+                    child: Container(
+                      height: 170.0,
+                      width: 120.0,
+                      decoration: BoxDecoration(
+                        color: Colors.black,
+                        borderRadius: BorderRadius.circular(8.0),
                       ),
                     ),
-                    errorWidget: (context, url, error) =>
-                        const Icon(Icons.error),
-                    height: 180.0,
-                    fit: BoxFit.cover,
                   ),
+                  errorWidget: (context, url, error) => const Icon(Icons.error),
+                  height: 180.0,
+                  fit: BoxFit.cover,
                 ),
               ),
-            );
-          },
-          childCount: state.moviesRecommendation.length,
-        ),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          mainAxisSpacing: 8.0,
-          crossAxisSpacing: 8.0,
-          childAspectRatio: 0.7,
-          crossAxisCount: 2,
-        ),
+            ),
+          );
+        },
+        childCount: state.moviesRecommendation.length,
+      ),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        mainAxisSpacing: 8.0,
+        crossAxisSpacing: 8.0,
+        childAspectRatio: 0.7,
+        crossAxisCount: 2,
       ),
     );
   }
