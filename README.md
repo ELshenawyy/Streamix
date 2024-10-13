@@ -1,13 +1,13 @@
-# **SCREEN SCENE**
+# **Movie Mania**
 
-I made this app with Flutter using clean architecture and  bloc as state management at the presentation layer.
+I made this app with Flutter using clean architecture and  bloc as state management.
 
-## Brief explanation
+## Description
 
 Screen Scene is a Movie and TV Show data app and searching for them too.
 I used (TMDB) for fetching the data.
 
-## Screenshots
+## Badges
 
 | Splash View | Home View | Popular Movies | Top Rated Movies |
 | :-----------: | :---------: | :------------: | :--------------: |
@@ -17,13 +17,6 @@ I used (TMDB) for fetching the data.
 | :-----------: | :---------: | :------------: 
 ![](https://github.com/AhmedKhaled8907/movies_app/blob/main/screenshots/movie_details.png?raw=true)|![](https://github.com/AhmedKhaled8907/movies_app/blob/main/screenshots/similar.png?raw=true)|![](https://github.com/AhmedKhaled8907/movies_app/blob/main/screenshots/movie_search.png?raw=true)|![]
 
-| TVs View | Popular TVs | Top Rated TVs | Search TVs |
-| :-----------: | :---------: | :------------: | :--------------: |
-![](https://github.com/AhmedKhaled8907/movies_app/blob/main/screenshots/tv.png?raw=true)|![](https://github.com/AhmedKhaled8907/movies_app/blob/main/screenshots/popular_tv.png?raw=true)|![](https://github.com/AhmedKhaled8907/movies_app/blob/main/screenshots/toprated_tv.png?raw=true)|![](https://github.com/AhmedKhaled8907/movies_app/blob/main/screenshots/tv_search.png?raw=true)
-
-| TV Details View | Settings View | Light Settings View | TVs View |
-| :-----------: | :---------: | :------------: | :--------------: |
-![](https://github.com/AhmedKhaled8907/movies_app/blob/main/screenshots/tv_details.png?raw=true)|![](https://github.com/AhmedKhaled8907/movies_app/blob/main/screenshots/dark_settings.png?raw=true)|![](https://github.com/AhmedKhaled8907/movies_app/blob/main/screenshots/light_settings.png?raw=true)|![](https://github.com/AhmedKhaled8907/movies_app/blob/main/screenshots/light_tv.png?raw=true)
 
 | Light Movie View | Light Movie Details View | Light Search | 
 | :-----------: | :---------: | :------------: 
