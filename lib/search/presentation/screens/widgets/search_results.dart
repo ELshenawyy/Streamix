@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:movie_app/core/utils/styles.dart';
 import 'package:movie_app/movies/presentation/screens/movie_detail_screen.dart';
 import 'package:movie_app/search/presentation/screens/widgets/search_result_items.dart';
 
@@ -23,8 +26,11 @@ class SearchResults extends StatelessWidget {
         if (state is SearchInitial) {
           return Center(
             child: Text(
-              AppString.anythingYouWant,
-              style: getMediumStyle(fontSize: FontSize.s16),
+              AppString.searchForAnyMovies,
+              style: GoogleFonts.poppins(
+                color: AppColors.gold,
+                fontSize: 18.sp,
+              ),
             ),
           );
         } else if (state is SearchLoading) {

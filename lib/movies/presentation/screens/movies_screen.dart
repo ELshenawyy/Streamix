@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:movie_app/movies/presentation/screens/popular_screen.dart';
 import 'package:movie_app/core/utils/app_strings.dart';
 import 'package:movie_app/movies/presentation/controllers/movies_bloc.dart';
@@ -34,10 +35,15 @@ class MoviesScreen extends StatelessWidget {
               pinned: false,
               stretch: true,
               automaticallyImplyLeading: false,
-              flexibleSpace: const FlexibleSpaceBar(
+              flexibleSpace: FlexibleSpaceBar(
                 titlePadding:
-                    EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
-                title: Text('Movies'),
+                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
+                title: Text(
+                  'Movies',
+                  style: GoogleFonts.poppins(
+                    letterSpacing: 1.2,
+                  ),
+                ),
               ),
             ),
             SliverList(
@@ -45,13 +51,14 @@ class MoviesScreen extends StatelessWidget {
                 [
                   const NowPlayingComponent(),
                   Container(
-                    margin: const EdgeInsets.fromLTRB(16.0, 24.0, 16.0, 8.0),
+                    margin: const EdgeInsets.fromLTRB(16.0, 16.0, 8.0, 8.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
                           AppStrings.popular,
-                          style: Theme.of(context).textTheme.titleLarge,
+                          style: GoogleFonts.poppins(
+                              fontSize: 22, letterSpacing: 1),
                         ),
                         InkWell(
                           onTap: () {
@@ -63,17 +70,30 @@ class MoviesScreen extends StatelessWidget {
                             );
                           },
                           child: Padding(
-                            padding:  EdgeInsets.all(8.0.sp),
+                            padding: EdgeInsets.all(8.0.sp),
                             child: Row(
                               children: [
                                 Text(
                                   AppStrings.seeMore,
-                                  style:
-                                      Theme.of(context).textTheme.titleMedium,
+                                  style: GoogleFonts.poppins(
+                                    color: Theme.of(context)
+                                        .textTheme
+                                        .titleSmall!
+                                        .color!
+                                        .withOpacity(0.7),
+                                  ),
                                 ),
-                                const Icon(
+                                const SizedBox(
+                                  width: 4,
+                                ),
+                                 Icon(
                                   Icons.arrow_forward_ios,
                                   size: 16.0,
+                                  color: Theme.of(context)
+                                      .textTheme
+                                      .titleSmall!
+                                      .color!
+                                      .withOpacity(0.6),
                                 ),
                               ],
                             ),
@@ -84,13 +104,14 @@ class MoviesScreen extends StatelessWidget {
                   ),
                   const PopularMoviesComponent(),
                   Container(
-                    margin: const EdgeInsets.fromLTRB(16.0, 24.0, 16.0, 8.0),
+                    margin: const EdgeInsets.fromLTRB(16.0, 24.0, 8.0, 8.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
                           AppStrings.topRated,
-                          style: Theme.of(context).textTheme.titleLarge,
+                          style: GoogleFonts.poppins(
+                              fontSize: 22, letterSpacing: 1),
                         ),
                         InkWell(
                           onTap: () {
@@ -107,12 +128,24 @@ class MoviesScreen extends StatelessWidget {
                               children: [
                                 Text(
                                   AppStrings.seeMore,
-                                  style:
-                                      Theme.of(context).textTheme.titleMedium,
+                                  style: GoogleFonts.poppins(
+                                      color: Theme.of(context)
+                                          .textTheme
+                                          .titleSmall!
+                                          .color!
+                                          .withOpacity(0.7)),
                                 ),
-                                 Icon(
+                                const SizedBox(
+                                  width: 4,
+                                ),
+                                Icon(
                                   Icons.arrow_forward_ios,
                                   size: 16.0.sp,
+                                  color: Theme.of(context)
+                                      .textTheme
+                                      .titleSmall!
+                                      .color!
+                                      .withOpacity(0.6),
                                 ),
                               ],
                             ),

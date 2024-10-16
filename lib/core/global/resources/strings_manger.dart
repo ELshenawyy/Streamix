@@ -14,7 +14,7 @@ class AppString {
   static const search = 'Search';
 
   static const cancel = 'Cancel';
-  static const anythingYouWant = 'Search for anything you want';
+  static const searchForAnyMovies = 'Search for any Movies';
   static const noDataToShow = 'No data to show';
   static const noResultsFound = 'No Results Found';
   static const moreLikeThis = "More like this";

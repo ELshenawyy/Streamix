@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:movie_app/core/global/resources/app_color.dart';
 import 'package:movie_app/core/utils/assets.dart';
 import '../../../../curved_navigation_bar/presentaion/screens/navigation_curved_bar.dart';
+import '../../../../curved_navigation_bar/presentaion/screens/test.dart';
 
 class SplashViewBody extends StatefulWidget {
   const SplashViewBody({super.key});
 
-
   @override
   State<SplashViewBody> createState() => _SplashViewBodyState();
-
 }
 
 class _SplashViewBodyState extends State<SplashViewBody>
@@ -26,8 +28,8 @@ class _SplashViewBodyState extends State<SplashViewBody>
       duration: const Duration(seconds: 2),
     );
     _animation = Tween<Offset>(
-      begin: const Offset(-1.0, 0.0),
-      end: const Offset(-0.1, 0.0),
+      begin: const Offset(-2.0, 0.0),
+      end: const Offset(0.0, 0.0),
     ).animate(_controller);
 
     _textOpacityAnimation = Tween<double>(
@@ -51,23 +53,22 @@ class _SplashViewBodyState extends State<SplashViewBody>
     });
 
     Future.delayed(
-      const Duration(milliseconds: 3300), // or any duration you want
-          () {
+      const Duration(milliseconds: 4000), // or any duration you want
+      () {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => const CurvedNavigationBarScreen(),
+            builder: (context) => const NavBarScreen(),
           ),
         );
       },
     );
-
   }
 
   @override
   Widget build(BuildContext context) {
-
-    final textTheme = Theme.of(context).textTheme.bodyMedium?.color ?? Colors.black;
+    final textTheme =
+        Theme.of(context).textTheme.bodyMedium?.color ?? Colors.black;
 
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -77,22 +78,22 @@ class _SplashViewBodyState extends State<SplashViewBody>
           children: [
             SlideTransition(
               position: _animation,
-              child: Image.asset(
+              child: SvgPicture.asset(
                 AssetsData.logo,
-                scale: 2,
+                width: MediaQuery.of(context).size.width * 0.8,
               ),
             ),
             const SizedBox(height: 20),
             AnimatedOpacity(
               opacity: _imageAnimationCompleted ? 1.0 : 0.0,
-              duration: const Duration(milliseconds: 300),
+              duration: const Duration(milliseconds: 400),
               child: FadeTransition(
                 opacity: _textOpacityAnimation,
                 child: Text(
-                  'Your Movie',
-                  style: TextStyle(
-                    fontSize: 26,
-                    fontWeight: FontWeight.bold,
+                  'Discover the world of movies',
+                  style: GoogleFonts.poppins(
+                    fontSize: 16,
+                    letterSpacing: 1,
                     color: textTheme.withOpacity(0.6),
                   ),
                 ),

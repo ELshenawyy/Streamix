@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movie_app/core/global/resources/app_color.dart';
 import 'package:movie_app/movies/presentation/controllers/movies_bloc.dart';
 import 'package:movie_app/movies/presentation/controllers/movies_state.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -19,10 +20,10 @@ class NowPlayingComponent extends StatelessWidget {
     }, builder: (context, state) {
       switch (state.nowPlayingState) {
         case RequestState.loading:
-          return const SizedBox(
+          return  SizedBox(
             height: 350,
             child: Center(
-              child: CircularProgressIndicator(),
+              child: CircularProgressIndicator(color: AppColors.gold,),
             ),
           );
 

@@ -1,4 +1,6 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:movie_app/core/global/resources/app_color.dart';
 import 'package:movie_app/watch_movies/screens/watch_movies.dart';
 import 'package:provider/provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -49,7 +51,10 @@ class MovieDetailContent extends StatelessWidget {
       builder: (context, state) {
         switch (state.moviesDetailsState) {
           case RequestState.loading:
-            return const Center(child: CircularProgressIndicator());
+            return const Center(
+                child: CircularProgressIndicator(
+              color: AppColors.gold,
+            ));
           case RequestState.loaded:
             final movieDetails = state.moviesDetails;
             if (movieDetails == null) {
@@ -129,23 +134,8 @@ class MovieDetailContent extends StatelessWidget {
                                   overflow: TextOverflow.ellipsis,
                                 ),
                               ),
-                              InkWell(
-                                child: const Icon(
-                                  Icons.play_circle_outline,
-                                  size: 32,
-                                  color: Colors.red,
-                                ),
-                                onTap: () {
-                                  if (movieDetails.id != null) {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => WatchMovieScreen(
-                                            movieId: movieDetails.id),
-                                      ),
-                                    );
-                                  }
-                                },
+                              PlayButtonWithHover(
+                                movieId: movieDetails.id,
                               ),
                             ],
                           ),
@@ -158,7 +148,7 @@ class MovieDetailContent extends StatelessWidget {
                                   horizontal: 8.0,
                                 ),
                                 decoration: BoxDecoration(
-                                  color: Colors.grey[800],
+                                  color: Colors.red[800],
                                   borderRadius: BorderRadius.circular(4.0),
                                 ),
                                 child: Text(
@@ -172,10 +162,9 @@ class MovieDetailContent extends StatelessWidget {
                               ),
                               const SizedBox(width: 16.0),
                               Row(children: [
-                                const Icon(
-                                  Icons.star,
+                                SvgPicture.asset(
+                                  "assets/icons/Star_fill.svg",
                                   color: Colors.amber,
-                                  size: 20.0,
                                 ),
                                 const SizedBox(width: 4.0),
                                 Text(
@@ -246,7 +235,7 @@ class MovieDetailContent extends StatelessWidget {
                           const SizedBox(height: 8.0),
                           Text(
                             '${AppStrings.genres}: ${_showGenres(movieDetails.genres)}',
-                            style:  TextStyle(
+                            style: TextStyle(
                               fontSize: 12.0,
                               fontWeight: FontWeight.w500,
                               letterSpacing: 1.2,
@@ -307,7 +296,7 @@ class MovieDetailContent extends StatelessWidget {
                 );
               },
               child: ClipRRect(
-                borderRadius: const BorderRadius.all(Radius.circular(4.0)),
+                borderRadius: const BorderRadius.all(Radius.circular(8.0)),
                 child: CachedNetworkImage(
                   imageUrl: ApiConstance.imageUrl(recommendation.backdropPath!),
                   placeholder: (context, url) => Shimmer.fromColors(
@@ -339,5 +328,75 @@ class MovieDetailContent extends StatelessWidget {
         crossAxisCount: 2,
       ),
     );
+  }
+}
+
+class PlayButtonWithHover extends StatefulWidget {
+  final int movieId;
+
+  const PlayButtonWithHover({Key? key, required this.movieId})
+      : super(key: key);
+
+  @override
+  _PlayButtonWithHoverState createState() => _PlayButtonWithHoverState();
+}
+
+class _PlayButtonWithHoverState extends State<PlayButtonWithHover> {
+  bool _isHovered = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return MouseRegion(
+      onEnter: (event) => _onHover(true),
+      onExit: (event) => _onHover(false),
+      child: GestureDetector(
+        onTap: () {
+          if (widget.movieId != null) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => WatchMovieScreen(movieId: widget.movieId),
+              ),
+            );
+          }
+        },
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeInOut,
+          width: _isHovered ? 50 : 40,
+          // Increase size on hover
+          height: _isHovered ? 50 : 40,
+          // Increase size on hover
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            gradient: LinearGradient(
+              colors: [Colors.red.withOpacity(0.8), Colors.red],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black26,
+                blurRadius: 8,
+                offset: Offset(0, 4),
+              ),
+            ],
+          ),
+          child: Center(
+            child: Icon(
+              Icons.play_circle_fill,
+              size: _isHovered ? 30 : 40, // Increase icon size on hover
+              color: Colors.white,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _onHover(bool isHovered) {
+    setState(() {
+      _isHovered = isHovered;
+    });
   }
 }

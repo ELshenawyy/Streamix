@@ -27,7 +27,7 @@ class SearchBarItems extends StatelessWidget {
             child: TextField(
               focusNode: focusNode,
               controller: controller,
-              cursorColor: AppColors.red,
+              cursorColor: AppColors.gold,
               style: getMediumStyle(fontSize:16).copyWith(
                 color: AppColors.black,
               ),
@@ -43,7 +43,9 @@ class SearchBarItems extends StatelessWidget {
                 prefixIcon: const Icon(Icons.search),
                 prefixIconColor: AppColors.grey,
                 filled: true,
-                fillColor: AppColors.white,
+                fillColor: Theme.of(context).brightness == Brightness.dark
+                    ? Colors.white
+                    : Colors.black12,
                 border: _outlineInputBorder(),
                 enabledBorder: _outlineInputBorder(),
                 focusedBorder: _outlineInputBorder(),
@@ -58,9 +60,11 @@ class SearchBarItems extends StatelessWidget {
 
   OutlineInputBorder _outlineInputBorder() {
     return OutlineInputBorder(
+
       borderRadius: BorderRadius.circular(
         16,
       ),
+
       borderSide: BorderSide.none,
     );
   }

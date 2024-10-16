@@ -2,6 +2,7 @@ import 'package:animate_do/animate_do.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:movie_app/core/global/resources/app_color.dart';
 import 'package:movie_app/core/utils/enums.dart';
 import 'package:movie_app/movies/presentation/controllers/movies_bloc.dart';
 import 'package:movie_app/movies/presentation/controllers/movies_state.dart';
@@ -22,10 +23,10 @@ class TopRatedMovies extends StatelessWidget {
       builder: (context, state) {
         switch (state.topRatedState) {
           case RequestState.loading:
-            return const SizedBox(
+            return  SizedBox(
               height: 170,
               child: Center(
-                child: CircularProgressIndicator(),
+                child: CircularProgressIndicator(color: AppColors.gold,),
               ),
             );
 

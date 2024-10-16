@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:movie_app/core/network/api_constance.dart';
 import 'package:movie_app/movies/presentation/screens/movie_detail_screen.dart';
 import 'package:provider/provider.dart';
@@ -31,16 +32,21 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        title: Text('Favorite', style: AppStyles.colorPageTitle(context)),
+        title: Text(
+          'Favorite',
+          style: GoogleFonts.poppins(
+            fontSize: 28,
+          ),
+        ),
       ),
       body: favoriteProduct == null || favoriteProduct.isEmpty
           ? const Center(child: Text('No favorites added yet'))
           : GridView.builder(
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
-                childAspectRatio: 0.7,
-                crossAxisSpacing: 8.0,
-                mainAxisSpacing: 8.0,
+                childAspectRatio: 0.75,
+                crossAxisSpacing: 2.0,
+                mainAxisSpacing: 6.0,
               ),
               itemCount: favoriteProduct.length,
               itemBuilder: (context, index) {
@@ -52,15 +58,16 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
 
   Widget buildFavoriteItem(BuildContext context, Map<String, dynamic> movie) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 6),
+      padding: const EdgeInsets.symmetric(horizontal: 10),
       width: 182.w,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           Stack(
             children: [
               SizedBox(
-                height: 230.h,
+                height: 180.h,
                 width: 182.w,
                 child: InkWell(
                   child: ClipRRect(
@@ -86,7 +93,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                 ),
               ),
               Positioned(
-                bottom: 175.h,
+                bottom: 140.h,
                 left: 120.w,
                 child: IconButton(
                   onPressed: () async {
