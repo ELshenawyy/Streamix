@@ -26,7 +26,7 @@ class TopRatedMoviesScreen extends StatelessWidget {
           builder: (context, state) {
             switch (state.topRatedState) {
               case RequestState.loading:
-                return const Center(child: CircularProgressIndicator());
+                return const Center(child: CircularProgressIndicator(color: AppColors.gold,));
 
               case RequestState.loaded:
                 final movies = state.topRatedMovies;
