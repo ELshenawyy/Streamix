@@ -20,10 +20,7 @@ class MoviesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => getIt<MoviesBloc>()
-        ..add(GetNowPlayingMoviesEvent())
-        ..add(GetPopularMoviesEvent())
-        ..add(GetTopRatedMoviesEvent()),
+      create: (context) => getIt<MoviesBloc>()..add(FetchAllMoviesEvent()),
       child: Scaffold(
         body: CustomScrollView(
           key: const Key('movieScrollView'),
@@ -37,7 +34,7 @@ class MoviesScreen extends StatelessWidget {
               automaticallyImplyLeading: false,
               flexibleSpace: FlexibleSpaceBar(
                 titlePadding:
-                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
+                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
                 title: Text(
                   'Movies',
                   style: GoogleFonts.poppins(
@@ -65,7 +62,7 @@ class MoviesScreen extends StatelessWidget {
                             Navigator.of(context).push(
                               MaterialPageRoute(
                                 builder: (context) =>
-                                    const PopularMoviesScreen(),
+                                const PopularMoviesScreen(),
                               ),
                             );
                           },
@@ -86,7 +83,7 @@ class MoviesScreen extends StatelessWidget {
                                 const SizedBox(
                                   width: 4,
                                 ),
-                                 Icon(
+                                Icon(
                                   Icons.arrow_forward_ios,
                                   size: 16.0,
                                   color: Theme.of(context)
@@ -118,7 +115,7 @@ class MoviesScreen extends StatelessWidget {
                             Navigator.of(context).push(
                               MaterialPageRoute(
                                 builder: (context) =>
-                                    const TopRatedMoviesScreen(),
+                                const TopRatedMoviesScreen(),
                               ),
                             );
                           },
