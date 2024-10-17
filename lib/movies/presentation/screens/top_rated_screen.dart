@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:movie_app/core/services/service_locator.dart';
@@ -26,7 +27,10 @@ class TopRatedMoviesScreen extends StatelessWidget {
           builder: (context, state) {
             switch (state.topRatedState) {
               case RequestState.loading:
-                return const Center(child: CircularProgressIndicator(color: AppColors.gold,));
+                return const Center(
+                    child: CircularProgressIndicator(
+                  color: AppColors.gold,
+                ));
 
               case RequestState.loaded:
                 final movies = state.topRatedMovies;
@@ -39,7 +43,8 @@ class TopRatedMoviesScreen extends StatelessWidget {
                 return CustomScrollView(
                   slivers: [
                     SliverAppBar(
-                      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                      backgroundColor:
+                          Theme.of(context).scaffoldBackgroundColor,
                       expandedHeight: 60.0,
                       floating: false,
                       pinned: false,
@@ -54,7 +59,7 @@ class TopRatedMoviesScreen extends StatelessWidget {
                     ),
                     SliverList(
                       delegate: SliverChildBuilderDelegate(
-                            (context, index) {
+                        (context, index) {
                           final movie = movies[index];
                           return InkWell(
                             onTap: () {
@@ -78,26 +83,32 @@ class TopRatedMoviesScreen extends StatelessWidget {
                                     ClipRRect(
                                       borderRadius: BorderRadius.circular(8.0),
                                       child: CachedNetworkImage(
-                                        height: MediaQuery.of(context).size.height * 0.25,
-                                        width: MediaQuery.of(context).size.width * 0.32,
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                0.25,
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.32,
                                         imageUrl: movie.backdropPath != null
-                                            ? ApiConstance.imageUrl(movie.backdropPath)
+                                            ? ApiConstance.imageUrl(
+                                                movie.backdropPath)
                                             : 'https://via.placeholder.com/150',
                                         fit: BoxFit.cover,
                                         placeholder: (context, url) =>
                                             Shimmer.fromColors(
-                                              baseColor: Colors.grey[850]!,
-                                              highlightColor: Colors.grey[800]!,
-                                              child: Container(color: Colors.black),
-                                            ),
+                                          baseColor: Colors.grey[850]!,
+                                          highlightColor: Colors.grey[800]!,
+                                          child: Container(color: Colors.black),
+                                        ),
                                         errorWidget: (context, url, error) =>
-                                        const Icon(Icons.error),
+                                            const Icon(Icons.error),
                                       ),
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           SizedBox(
                                             width: 200,
@@ -115,16 +126,20 @@ class TopRatedMoviesScreen extends StatelessWidget {
                                           Row(
                                             children: [
                                               Container(
-                                                padding: const EdgeInsets.symmetric(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
                                                   vertical: 2.0,
                                                   horizontal: 8.0,
                                                 ),
                                                 decoration: BoxDecoration(
                                                   color: Colors.red[800],
-                                                  borderRadius: BorderRadius.circular(4.0),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          4.0),
                                                 ),
                                                 child: Text(
-                                                  movie.releaseDate.split('-')[0],
+                                                  movie.releaseDate
+                                                      .split('-')[0],
                                                   style: const TextStyle(
                                                     fontSize: 16.0,
                                                     fontWeight: FontWeight.w500,
@@ -138,7 +153,8 @@ class TopRatedMoviesScreen extends StatelessWidget {
                                               ),
                                               const SizedBox(width: 8),
                                               Text(
-                                                movie.voteAverage.toStringAsFixed(1),
+                                                movie.voteAverage
+                                                    .toStringAsFixed(1),
                                                 style: const TextStyle(
                                                   fontSize: 16.0,
                                                   fontWeight: FontWeight.w500,
@@ -148,10 +164,12 @@ class TopRatedMoviesScreen extends StatelessWidget {
                                             ],
                                           ),
                                           SizedBox(
-                                            height: 90,
-                                            width: 208,
+                                            width: 208.w,
                                             child: Text(
-                                                '${movie.overview.substring(0, 110)}...'),
+                                              movie.overview,
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 6,
+                                            ),
                                           ),
                                         ],
                                       ),

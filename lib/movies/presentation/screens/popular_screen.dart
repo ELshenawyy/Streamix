@@ -148,11 +148,11 @@ class PopularMoviesScreen extends StatelessWidget {
                                             ],
                                           ),
                                           SizedBox(
-                                            width: 225.h,
+                                            width: 208.w,
                                             child: Text(
                                               movie.overview,
                                               style: GoogleFonts.poppins(),
-                                              maxLines: 4,
+                                              maxLines: 6,
                                               overflow: TextOverflow.ellipsis,
                                             ),
                                           ),
