@@ -79,7 +79,7 @@ class _SplashViewBodyState extends State<SplashViewBody>
             SlideTransition(
               position: _animation,
               child: SvgPicture.asset(
-                AssetsData.logo,
+                AssetsData.splashText,
                 width: MediaQuery.of(context).size.width * 0.8,
               ),
             ),

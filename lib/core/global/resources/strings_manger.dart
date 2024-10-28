@@ -1,11 +1,11 @@
 class AppString {
-  static const appName = "Movie Mania";
+  static const appName = "Streamix";
   static const screen = "SCREEN";
   static const scene = "SCENE";
   static const slidingText = 'Find your next favorite\n movie or tv show';
   static const popular = "Popular";
   static const seeMore = "See More";
-  static const topRated = "Top Rated";
+  static const topRated = "top Rated";
   static const popularMovies = 'Popular Movies';
   static const topRatedMovies = 'Top Rated Movies';
   static const genres = "Genres";
@@ -15,6 +15,8 @@ class AppString {
   static const play = 'play';
   static const overview = 'overview';
   static const seeLess = 'seeLess';
+  static const noFavouriteAddedYet = 'No favourite added yet';
+
 
 
 

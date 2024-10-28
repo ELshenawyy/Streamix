@@ -5,6 +5,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:movie_app/core/network/api_constance.dart';
 import 'package:movie_app/movies/presentation/screens/movie_detail_screen.dart';
 import 'package:provider/provider.dart';
+import '../../core/global/resources/app_color.dart';
+import '../../core/global/resources/strings_manger.dart';
 import '../../core/utils/styles.dart';
 import 'controller/favoutite_screen_provider.dart';
 
@@ -33,14 +35,18 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
       appBar: AppBar(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         title: Text(
-          'Favorite',
+          'Favorites',
           style: GoogleFonts.poppins(
             fontSize: 28,
           ),
         ),
       ),
       body: favoriteProduct == null || favoriteProduct.isEmpty
-          ? const Center(child: Text('No favorites added yet'))
+          ?  Center(child: Text( AppString.noFavouriteAddedYet,
+        style: GoogleFonts.poppins(
+          color: AppColors.gold,
+          fontSize: 18.sp,
+        ),))
           : GridView.builder(
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,

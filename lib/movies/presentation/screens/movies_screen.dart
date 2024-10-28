@@ -7,6 +7,7 @@ import 'package:movie_app/core/utils/app_strings.dart';
 import 'package:movie_app/movies/presentation/controllers/movies_bloc.dart';
 import 'package:movie_app/movies/presentation/controllers/movies_events.dart';
 import 'package:movie_app/movies/presentation/screens/top_rated_screen.dart';
+import '../../../core/global/resources/strings_manger.dart';
 import '../../../core/services/service_locator.dart';
 import '../component/now_playing_component.dart';
 import '../component/popular_movies_component.dart';
@@ -25,24 +26,7 @@ class MoviesScreen extends StatelessWidget {
         body: CustomScrollView(
           key: const Key('movieScrollView'),
           slivers: [
-            SliverAppBar(
-              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-              expandedHeight: 60.0.sp,
-              floating: false,
-              pinned: false,
-              stretch: true,
-              automaticallyImplyLeading: false,
-              flexibleSpace: FlexibleSpaceBar(
-                titlePadding:
-                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
-                title: Text(
-                  'Movies',
-                  style: GoogleFonts.poppins(
-                    letterSpacing: 1.2,
-                  ),
-                ),
-              ),
-            ),
+
             SliverList(
               delegate: SliverChildListDelegate(
                 [
@@ -53,9 +37,9 @@ class MoviesScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          AppStrings.popular,
+                          AppStrings.trending,
                           style: GoogleFonts.poppins(
-                              fontSize: 22, letterSpacing: 1),
+                              fontSize: 22,),
                         ),
                         InkWell(
                           onTap: () {
@@ -81,7 +65,7 @@ class MoviesScreen extends StatelessWidget {
                                   ),
                                 ),
                                 const SizedBox(
-                                  width: 4,
+                                  width: 3,
                                 ),
                                 Icon(
                                   Icons.arrow_forward_ios,
@@ -106,9 +90,9 @@ class MoviesScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          AppStrings.topRated,
+                          AppString.topRated,
                           style: GoogleFonts.poppins(
-                              fontSize: 22, letterSpacing: 1),
+                              fontSize: 22,),
                         ),
                         InkWell(
                           onTap: () {
@@ -133,7 +117,7 @@ class MoviesScreen extends StatelessWidget {
                                           .withOpacity(0.7)),
                                 ),
                                 const SizedBox(
-                                  width: 4,
+                                  width: 3,
                                 ),
                                 Icon(
                                   Icons.arrow_forward_ios,
@@ -152,7 +136,7 @@ class MoviesScreen extends StatelessWidget {
                     ),
                   ),
                   const TopRatedMovies(),
-                  const SizedBox(height: 50.0),
+                  const SizedBox(height: 30.0),
                 ],
               ),
             ),

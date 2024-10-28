@@ -64,7 +64,7 @@ class MovieDetailContent extends StatelessWidget {
               key: const Key('movieDetailScrollView'),
               slivers: [
                 SliverAppBar(
-                  pinned: true,
+                  pinned: false,
                   expandedHeight: 250.0,
                   flexibleSpace: FlexibleSpaceBar(
                     background: FadeIn(
@@ -237,6 +237,23 @@ class MovieDetailContent extends StatelessWidget {
                             ),
                           ),
                         ],
+                      ),
+                    ),
+                  ),
+                ),
+                SliverPadding(
+                  padding: const EdgeInsets.fromLTRB(16.0, 4.0, 16.0, 4.0),
+                  sliver: SliverToBoxAdapter(
+                    child: FadeInUp(
+                      from: 20,
+                      duration: const Duration(milliseconds: 500),
+                      child: const Text(
+                        AppStrings.moreLikeThis,
+                        style: TextStyle(
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.w500,
+                          letterSpacing: 1.2,
+                        ),
                       ),
                     ),
                   ),

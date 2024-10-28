@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:movie_app/core/global/resources/app_color.dart';
+import 'package:movie_app/core/global/resources/strings_manger.dart';
 import 'package:movie_app/movies/presentation/controllers/movies_bloc.dart';
 import 'package:movie_app/movies/presentation/controllers/movies_state.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -15,15 +17,20 @@ class NowPlayingComponent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDarkMode = theme.brightness == Brightness.dark;
+
     return BlocBuilder<MoviesBloc, MoviesState>(buildWhen: (previous, current) {
       return previous.nowPlayingState != current.nowPlayingState;
     }, builder: (context, state) {
       switch (state.nowPlayingState) {
         case RequestState.loading:
-          return  SizedBox(
+          return const SizedBox(
             height: 350,
             child: Center(
-              child: CircularProgressIndicator(color: AppColors.gold,),
+              child: CircularProgressIndicator(
+                color: AppColors.gold,
+              ),
             ),
           );
 
@@ -49,16 +56,17 @@ class NowPlayingComponent extends StatelessWidget {
                       children: [
                         ShaderMask(
                           shaderCallback: (rect) {
-                            final theme = Theme.of(context);
-                            final isDarkMode = theme.brightness == Brightness.dark;
-
                             return LinearGradient(
                               begin: Alignment.topCenter,
                               end: Alignment.bottomCenter,
                               colors: [
                                 Colors.transparent,
-                                isDarkMode ? Colors.black.withOpacity(0.7) : Colors.white.withOpacity(0.9),
-                                isDarkMode ? Colors.black.withOpacity(0.7) : Colors.white.withOpacity(0.8),
+                                isDarkMode
+                                    ? Colors.black.withOpacity(0.5)
+                                    : Colors.white.withOpacity(0.95),
+                                isDarkMode
+                                    ? Colors.black.withOpacity(0.6)
+                                    : Colors.white.withOpacity(0.95),
                                 Colors.transparent,
                               ],
                               stops: const [0, 0.15, 0.75, 1],
@@ -79,7 +87,7 @@ class NowPlayingComponent extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               Padding(
-                                padding: const EdgeInsets.only(bottom: 16.0),
+                                padding: const EdgeInsets.only(bottom: 8.0),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
@@ -90,11 +98,14 @@ class NowPlayingComponent extends StatelessWidget {
                                     ),
                                     const SizedBox(width: 5.0),
                                     Text(
-                                      'Now Playing'.toUpperCase(),
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyLarge
-                                          ?.copyWith(fontSize: 18),
+                                      AppString.nowPlaying.toUpperCase(),
+                                      style: GoogleFonts.poppins(
+                                        fontSize: 16,
+                                      ).copyWith(
+                                        color: isDarkMode
+                                            ? Colors.white.withOpacity(0.7)
+                                            : Colors.black.withOpacity(0.7),
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -104,12 +115,7 @@ class NowPlayingComponent extends StatelessWidget {
                                 child: Text(
                                   item.title,
                                   textAlign: TextAlign.center,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyLarge
-                                      ?.copyWith(
-                                        fontSize: 24,
-                                      ),
+                                  style: GoogleFonts.poppins(fontSize: 24),
                                 ),
                               ),
                             ],
