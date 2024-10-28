@@ -13,7 +13,6 @@ import 'package:movie_app/core/utils/enums.dart';
 import 'package:movie_app/movies/presentation/controllers/movie_details_bloc.dart';
 import 'package:movie_app/movies/presentation/controllers/movie_details_event.dart';
 import 'package:movie_app/movies/presentation/controllers/movie_details_state.dart';
-
 import 'package:shimmer/shimmer.dart';
 
 import '../../../core/network/api_constance.dart';
@@ -53,8 +52,8 @@ class MovieDetailContent extends StatelessWidget {
           case RequestState.loading:
             return const Center(
                 child: CircularProgressIndicator(
-              color: AppColors.gold,
-            ));
+                  color: AppColors.gold,
+                ));
           case RequestState.loaded:
             final movieDetails = state.moviesDetails;
             if (movieDetails == null) {
@@ -70,41 +69,44 @@ class MovieDetailContent extends StatelessWidget {
                   flexibleSpace: FlexibleSpaceBar(
                     background: FadeIn(
                       duration: const Duration(milliseconds: 800),
-                      child: ShaderMask(
-                        shaderCallback: (rect) {
-                          return const LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [
-                              Colors.transparent,
-                              Colors.black,
-                              Colors.black,
-                              Colors.transparent,
-                            ],
-                            stops: [0.0, 0.5, 1.0, 1.0],
-                          ).createShader(
-                            Rect.fromLTRB(0.0, 0.0, rect.width, rect.height),
-                          );
-                        },
-                        blendMode: BlendMode.dstIn,
-                        child: movieDetails.backdropPath != null
-                            ? CachedNetworkImage(
-                                width: MediaQuery.of(context).size.width,
-                                imageUrl: ApiConstance.imageUrl(
-                                    movieDetails.backdropPath),
-                                fit: BoxFit.cover,
-                              )
-                            : Container(
-                                width: MediaQuery.of(context).size.width,
-                                height: 250.0,
-                                color: Colors.grey,
-                                child: const Center(
-                                  child: Text(
-                                    'Image not available',
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                ),
+                      child: Hero(
+                        tag: "hero",
+                        child: ShaderMask(
+                          shaderCallback: (rect) {
+                            return const LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                              colors: [
+                                Colors.transparent,
+                                Colors.black,
+                                Colors.black,
+                                Colors.transparent,
+                              ],
+                              stops: [0.0, 0.5, 1.0, 1.0],
+                            ).createShader(
+                              Rect.fromLTRB(0.0, 0.0, rect.width, rect.height),
+                            );
+                          },
+                          blendMode: BlendMode.dstIn,
+                          child: movieDetails.backdropPath != null
+                              ? CachedNetworkImage(
+                            width: MediaQuery.of(context).size.width,
+                            imageUrl: ApiConstance.imageUrl(
+                                movieDetails.backdropPath),
+                            fit: BoxFit.cover,
+                          )
+                              : Container(
+                            width: MediaQuery.of(context).size.width,
+                            height: 250.0,
+                            color: Colors.grey,
+                            child: const Center(
+                              child: Text(
+                                'Image not available',
+                                style: TextStyle(color: Colors.white),
                               ),
+                            ),
+                          ),
+                        ),
                       ),
                     ),
                   ),
@@ -152,8 +154,7 @@ class MovieDetailContent extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(4.0),
                                 ),
                                 child: Text(
-                                  movieDetails.releaseDate.split('-')[0] ??
-                                      'N/A',
+                                  movieDetails.releaseDate.split('-')[0] ?? 'N/A',
                                   style: const TextStyle(
                                     fontSize: 16.0,
                                     fontWeight: FontWeight.w500,
@@ -170,7 +171,7 @@ class MovieDetailContent extends StatelessWidget {
                                 Text(
                                   movieDetails.voteAverage != null
                                       ? movieDetails.voteAverage
-                                          .toStringAsFixed(1)
+                                      .toStringAsFixed(1)
                                       : 'N/A',
                                   style: const TextStyle(
                                     fontSize: 16.0,
@@ -181,9 +182,8 @@ class MovieDetailContent extends StatelessWidget {
                                 IconButton(
                                   icon: Icon(
                                     Provider.of<FavoriteMovieProvider>(context)
-                                            .isFavoriteMovie(state
-                                                .moviesDetails!.id
-                                                .toString())
+                                        .isFavoriteMovie(
+                                        state.moviesDetails!.id.toString())
                                         ? Icons.favorite
                                         : Icons.favorite_border_rounded,
                                     color: Colors.red,
@@ -191,9 +191,9 @@ class MovieDetailContent extends StatelessWidget {
                                   ),
                                   onPressed: () async {
                                     final favoriteMovieProvider =
-                                        Provider.of<FavoriteMovieProvider>(
-                                            context,
-                                            listen: false);
+                                    Provider.of<FavoriteMovieProvider>(
+                                        context,
+                                        listen: false);
                                     if (favoriteMovieProvider.isFavoriteMovie(
                                         state.moviesDetails!.id.toString())) {
                                       favoriteMovieProvider.removeFavoriteMovie(
@@ -209,8 +209,7 @@ class MovieDetailContent extends StatelessWidget {
                                 ),
                               ]),
                               SizedBox(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.25),
+                                  width: MediaQuery.of(context).size.width * 0.25),
                               Text(
                                 _showDuration(movieDetails.runtime),
                                 style: const TextStyle(
@@ -222,16 +221,7 @@ class MovieDetailContent extends StatelessWidget {
                             ],
                           ),
                           const SizedBox(height: 20.0),
-                          Text(
-                            '${movieDetails.overview ?? 'No overview available'}...', //TODO
-                            style: const TextStyle(
-                              fontSize: 14.0,
-                              fontWeight: FontWeight.w400,
-                              letterSpacing: 1.2,
-                            ),
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 3,
-                          ),
+                          MovieOverview(movieDetails: movieDetails),
                           const SizedBox(height: 8.0),
                           Text(
                             '${AppStrings.genres}: ${_showGenres(movieDetails.genres)}',
@@ -259,7 +249,21 @@ class MovieDetailContent extends StatelessWidget {
             );
           case RequestState.error:
             return Center(
-              child: Text(state.moviesDetailsMessage),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(state.moviesDetailsMessage),
+                  const SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed: () {
+                      BlocProvider.of<MovieDetailsBloc>(context)
+                        ..add(GetDetailsMovieEvent(state.moviesDetails!.id))
+                        ..add(GetRecommendedMoviesEvent(state.moviesDetails!.id));
+                    },
+                    child: const Text('Retry'),
+                  ),
+                ],
+              ),
             );
         }
       },
@@ -281,7 +285,7 @@ class MovieDetailContent extends StatelessWidget {
   Widget _showRecommendations(MovieDetailsState state) {
     return SliverGrid(
       delegate: SliverChildBuilderDelegate(
-        (context, index) {
+            (context, index) {
           final recommendation = state.moviesRecommendation[index];
           return FadeInUp(
             from: 20,
@@ -290,8 +294,7 @@ class MovieDetailContent extends StatelessWidget {
               onTap: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) =>
-                        MovieDetailScreen(id: recommendation.id),
+                    builder: (context) => MovieDetailScreen(id: recommendation.id),
                   ),
                 );
               },
@@ -322,81 +325,129 @@ class MovieDetailContent extends StatelessWidget {
         childCount: state.moviesRecommendation.length,
       ),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
         mainAxisSpacing: 8.0,
         crossAxisSpacing: 8.0,
         childAspectRatio: 0.7,
-        crossAxisCount: 2,
       ),
     );
   }
 }
 
+class MovieOverview extends StatefulWidget {
+  final dynamic movieDetails;
+
+  const MovieOverview({Key? key, required this.movieDetails}) : super(key: key);
+
+  @override
+  State<MovieOverview> createState() => _MovieOverviewState();
+}
+
+class _MovieOverviewState extends State<MovieOverview> {
+  bool isExpanded = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          widget.movieDetails.overview ?? 'No overview available',
+          style: GoogleFonts.poppins(
+            fontSize: 14.0,
+            fontWeight: FontWeight.w400,
+
+          ),
+          maxLines: isExpanded ? null : 3,
+          overflow: isExpanded ? TextOverflow.visible : TextOverflow.ellipsis,
+        ),
+        const SizedBox(height: 8.0),
+        Align(
+          alignment: Alignment.centerRight,  // Aligns the "More/Less" to the right center
+          child: GestureDetector(
+            onTap: () {
+              setState(() {
+                isExpanded = !isExpanded;
+              });
+            },
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  isExpanded ? 'Less' : 'More',
+                  style: GoogleFonts.poppins(
+                    fontSize: 12.0,
+                    fontWeight: FontWeight.w800,
+                    color: Colors.red,
+
+
+                  ),
+                ),
+                const SizedBox(width: 4.0),
+                Icon(
+                  isExpanded ? Icons.arrow_upward : Icons.arrow_downward,
+                  color: Colors.red,
+                  size: 16.0,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+
 class PlayButtonWithHover extends StatefulWidget {
   final int movieId;
 
-  const PlayButtonWithHover({Key? key, required this.movieId})
-      : super(key: key);
+  const PlayButtonWithHover({super.key, required this.movieId});
 
   @override
   _PlayButtonWithHoverState createState() => _PlayButtonWithHoverState();
 }
 
 class _PlayButtonWithHoverState extends State<PlayButtonWithHover> {
-  bool _isHovered = false;
+  bool isHovered = false;
 
   @override
   Widget build(BuildContext context) {
     return MouseRegion(
-      onEnter: (event) => _onHover(true),
-      onExit: (event) => _onHover(false),
+      onEnter: (_) {
+        setState(() {
+          isHovered = true;
+        });
+      },
+      onExit: (_) {
+        setState(() {
+          isHovered = false;
+        });
+      },
       child: GestureDetector(
         onTap: () {
-          if (widget.movieId != null) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => WatchMovieScreen(movieId: widget.movieId),
-              ),
-            );
-          }
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => WatchMovieScreen(movieId: widget.movieId),
+            ),
+          );
         },
         child: AnimatedContainer(
-          duration: const Duration(milliseconds: 300),
-          curve: Curves.easeInOut,
-          width: _isHovered ? 50 : 40,
-          // Increase size on hover
-          height: _isHovered ? 50 : 40,
-          // Increase size on hover
-          decoration: BoxDecoration(
+          duration: const Duration(milliseconds: 200),
+          height: isHovered ? 40 : 50,
+          width: isHovered ? 30 : 45,
+          decoration: const BoxDecoration(
             shape: BoxShape.circle,
-            gradient: LinearGradient(
-              colors: [Colors.red.withOpacity(0.8), Colors.red],
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black26,
-                blurRadius: 8,
-                offset: Offset(0, 4),
-              ),
-            ],
+            color: AppColors.gold,
           ),
-          child: Center(
-            child: Icon(
-              Icons.play_circle_fill,
-              size: _isHovered ? 30 : 40, // Increase icon size on hover
-              color: Colors.white,
-            ),
+          child: Icon(
+            Icons.play_arrow_rounded,
+            size: isHovered ? 35 : 30,
+            color: Colors.white,
           ),
         ),
       ),
     );
-  }
-
-  void _onHover(bool isHovered) {
-    setState(() {
-      _isHovered = isHovered;
-    });
   }
 }

@@ -15,11 +15,14 @@ class MoviesBloc extends Bloc<MoviesEvents, MoviesState> {
   final GetTopRatedMoviesUseCase getTopRatedMoviesUseCase;
 
   MoviesBloc(
-    this.getNowPlayingMoviesUseCase,
-    this.getPopularMoviesUseCase,
-    this.getTopRatedMoviesUseCase,
-  ) : super(const MoviesState()) {
+      this.getNowPlayingMoviesUseCase,
+      this.getPopularMoviesUseCase,
+      this.getTopRatedMoviesUseCase,
+      ) : super(const MoviesState()) {
     on<FetchAllMoviesEvent>(_fetchAllMovies);
+    on<GetTopRatedMoviesEvent>(_getTopRatedMovies);
+    on<GetPopularMoviesEvent>(_getPopularMovies);
+    on<GetNowPlayingMoviesEvent>(_getNowPlayingMovies);
   }
 
   FutureOr<void> _fetchAllMovies(
@@ -30,18 +33,16 @@ class MoviesBloc extends Bloc<MoviesEvents, MoviesState> {
       topRatedState: RequestState.loading,
     ));
 
-    // Fetch movies concurrently
     final nowPlayingFuture = getNowPlayingMoviesUseCase(const NoParameter());
     final popularFuture = getPopularMoviesUseCase(const NoParameter());
     final topRatedFuture = getTopRatedMoviesUseCase(const NoParameter());
 
-    // Wait for all futures to complete
     final results =
-        await Future.wait([nowPlayingFuture, popularFuture, topRatedFuture]);
+    await Future.wait([nowPlayingFuture, popularFuture, topRatedFuture]);
 
     results.forEach((result) {
       result.fold(
-        (failure) => emit(state.copyWith(
+            (failure) => emit(state.copyWith(
           nowPlayingState: RequestState.error,
           popularState: RequestState.error,
           topRatedState: RequestState.error,
@@ -49,7 +50,7 @@ class MoviesBloc extends Bloc<MoviesEvents, MoviesState> {
           popularMessage: failure.errMessage,
           topRatedMessage: failure.errMessage,
         )),
-        (movies) {
+            (movies) {
           if (movies is List<Movie>) {
             if (state.nowPlayingState == RequestState.loading) {
               emit(state.copyWith(
@@ -71,5 +72,56 @@ class MoviesBloc extends Bloc<MoviesEvents, MoviesState> {
         },
       );
     });
+  }
+
+  FutureOr<void> _getTopRatedMovies(
+      GetTopRatedMoviesEvent event, Emitter<MoviesState> emit) async {
+    emit(state.copyWith(topRatedState: RequestState.loading));
+
+    final result = await getTopRatedMoviesUseCase(const NoParameter());
+    result.fold(
+          (failure) => emit(state.copyWith(
+        topRatedState: RequestState.error,
+        topRatedMessage: failure.errMessage,
+      )),
+          (movies) => emit(state.copyWith(
+        topRatedMovies: movies,
+        topRatedState: RequestState.loaded,
+      )),
+    );
+  }
+
+  FutureOr<void> _getPopularMovies(
+      GetPopularMoviesEvent event, Emitter<MoviesState> emit) async {
+    emit(state.copyWith(popularState: RequestState.loading));
+
+    final result = await getPopularMoviesUseCase(const NoParameter());
+    result.fold(
+          (failure) => emit(state.copyWith(
+        popularState: RequestState.error,
+        popularMessage: failure.errMessage,
+      )),
+          (movies) => emit(state.copyWith(
+        popularMovies: movies,
+        popularState: RequestState.loaded,
+      )),
+    );
+  }
+
+  FutureOr<void> _getNowPlayingMovies(
+      GetNowPlayingMoviesEvent event, Emitter<MoviesState> emit) async {
+    emit(state.copyWith(nowPlayingState: RequestState.loading));
+
+    final result = await getNowPlayingMoviesUseCase(const NoParameter());
+    result.fold(
+          (failure) => emit(state.copyWith(
+        nowPlayingState: RequestState.error,
+        nowPlayingMessage: failure.errMessage,
+      )),
+          (movies) => emit(state.copyWith(
+        nowPlayingMovies: movies,
+        nowPlayingState: RequestState.loaded,
+      )),
+    );
   }
 }

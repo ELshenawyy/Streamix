@@ -12,6 +12,11 @@ class AppString {
   static const nowPlaying = 'Now Playing';
   static const onTheAir = 'On The Air';
   static const search = 'Search';
+  static const play = 'play';
+  static const overview = 'overview';
+  static const seeLess = 'seeLess';
+
+
 
   static const cancel = 'Cancel';
   static const searchForAnyMovies = 'Search for any Movies';
