@@ -19,8 +19,9 @@ class ApiConstance {
   static String recommendationsMoviePath(int movieId) =>
       "$baseUrl/movie/$movieId/recommendations?api_key=$apiKey";
 
-  static String searchMoviesBaseUrl(String query) =>
-      "$baseUrl/search/$movie?api_key=$apiKey&query=$query";
+  static String searchMoviesBaseUrl(String query, String language) =>
+      "$baseUrl/search/movie?api_key=$apiKey&query=$query&language=$language";
+
 
 
 }
