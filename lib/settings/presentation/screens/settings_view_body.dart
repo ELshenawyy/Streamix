@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:movie_app/core/global/resources/app_color.dart';
+import 'package:movie_app/search/presentation/controller/search_events.dart';
+import 'package:movie_app/settings/presentation/screens/history_screen.dart';
+import 'package:movie_app/settings/presentation/screens/privacy_policy.dart';
 import 'package:provider/provider.dart';
-
 import '../controllers/manager/theme_notifier.dart';
 
 class SettingsViewBody extends StatelessWidget {
@@ -22,6 +24,7 @@ class SettingsViewBody extends StatelessWidget {
       ),
       body: ListView(
         children: [
+          // Dark Mode Toggle
           ListTile(
             leading: Icon(
               Provider.of<ThemeNotifier>(context).themeMode == ThemeMode.dark
@@ -43,6 +46,79 @@ class SettingsViewBody extends StatelessWidget {
             ),
           ),
           const Divider(),
+
+          // Account Settings
+
+
+          // Notifications Settings
+          ListTile(
+            leading: const Icon(Icons.notifications_outlined),
+            title: Text(
+              "Notifications",
+              style: GoogleFonts.poppins(),
+            ),
+            onTap: () {
+              // Navigate to Notification Settings page
+            },
+          ),
+          const Divider(),
+
+          // Language Settings
+          ListTile(
+            leading: const Icon(Icons.language),
+            title: Text(
+              "Language",
+              style: GoogleFonts.poppins(),
+            ),
+            onTap: () {
+              // Display Language Selection Options
+            },
+          ),
+          const Divider(),
+
+          // Privacy & Security
+          ListTile(
+            leading: const Icon(Icons.privacy_tip_outlined),
+            title: Text(
+              "Privacy & Security",
+              style: GoogleFonts.poppins(),
+            ),
+            onTap: () {
+              showModalBottomSheet(
+                context: context,
+                builder: (context) => Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    ListTile(
+                      leading: const Icon(Icons.description),
+                      title: const Text("Privacy Policy"),
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(builder: (context)=> PrivacyPolicyScreen()));
+                      },
+                    ),
+                    ListTile(
+                      leading: const Icon(Icons.history),
+                      title: const Text("Clear Search History"),
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(builder: (context)=> HistoryScreen()));
+                      },
+                    ),
+                    ListTile(
+                      leading: const Icon(Icons.analytics_outlined),
+                      title: const Text("Ads & Analytics Preferences"),
+                      onTap: () {
+                        // Navigate to Ads & Analytics screen
+                      },
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+
+          const Divider(),
+
+          // About
           ListTile(
             leading: const Icon(Icons.info_outline),
             title: Text(
@@ -50,23 +126,25 @@ class SettingsViewBody extends StatelessWidget {
               style: GoogleFonts.poppins(),
             ),
             onTap: () {
-              // Navigate to About Us page or show info
               showAboutDialog(
-                  context: context,
-                  applicationName: "MovieMania",
-                  applicationVersion: "1.0.0",
-                  applicationLegalese: "© 2024 Movie Mania Inc.",
-                  applicationIcon: Image.asset(
-                    'assets/icons/app_icon_updated.png',
-                    width: 48,
-                    height: 48,
-                  ),
-                  barrierColor: darkMode
-                      ? Colors.white.withOpacity(0.2)
-                      : Colors.black.withOpacity(0.6));
+                context: context,
+                applicationName: "Streamix",
+                applicationVersion: "1.0.0",
+                applicationLegalese: "© 2024 Streamix Inc.",
+                applicationIcon: Image.asset(
+                  'assets/icons/app_icon.png',
+                  width: 48,
+                  height: 48,
+                ),
+                barrierColor: darkMode
+                    ? Colors.white.withOpacity(0.2)
+                    : Colors.black.withOpacity(0.6),
+              );
             },
           ),
           const Divider(),
+
+          // Contact Us
           ListTile(
             leading: const Icon(Icons.contact_mail),
             title: Text(
@@ -74,7 +152,6 @@ class SettingsViewBody extends StatelessWidget {
               style: GoogleFonts.poppins(),
             ),
             onTap: () {
-              // Show contact options or navigate to contact screen
               showDialog(
                 barrierColor: darkMode
                     ? Colors.white.withOpacity(0.2)
@@ -100,6 +177,18 @@ class SettingsViewBody extends StatelessWidget {
                 ),
               );
             },
+          ),
+          const Divider(),
+
+          // App Version
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 20),
+            child: Center(
+              child: Text(
+                "App Version 1.0.0",
+                style: GoogleFonts.poppins(color: Colors.grey),
+              ),
+            ),
           ),
         ],
       ),

@@ -10,11 +10,14 @@ class SearchBarItems extends StatelessWidget {
   final TextEditingController? controller;
   final void Function()? clearSearch;
   final FocusNode focusNode;
+  final void Function(String query) onSubmitted; // New callback for submission
 
   const SearchBarItems({
     required this.controller,
     required this.clearSearch,
-    super.key, required this.focusNode,
+    required this.focusNode,
+    required this.onSubmitted, // Add to constructor
+    super.key,
   });
 
   @override
@@ -28,7 +31,7 @@ class SearchBarItems extends StatelessWidget {
               focusNode: focusNode,
               controller: controller,
               cursorColor: AppColors.gold,
-              style: getMediumStyle(fontSize:16).copyWith(
+              style: getMediumStyle(fontSize: 16).copyWith(
                 color: AppColors.black,
               ),
               decoration: InputDecoration(
@@ -50,6 +53,11 @@ class SearchBarItems extends StatelessWidget {
                 enabledBorder: _outlineInputBorder(),
                 focusedBorder: _outlineInputBorder(),
               ),
+              onSubmitted: (query) {
+                if (query.isNotEmpty) {
+                  onSubmitted(query); // Call the callback when user submits
+                }
+              },
             ),
           ),
           CancelTextButton(onPressed: clearSearch),
@@ -60,11 +68,7 @@ class SearchBarItems extends StatelessWidget {
 
   OutlineInputBorder _outlineInputBorder() {
     return OutlineInputBorder(
-
-      borderRadius: BorderRadius.circular(
-        16,
-      ),
-
+      borderRadius: BorderRadius.circular(16),
       borderSide: BorderSide.none,
     );
   }

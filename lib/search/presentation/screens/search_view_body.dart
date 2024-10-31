@@ -7,6 +7,8 @@ import '../../../core/global/resources/font_manager.dart';
 import '../../../core/global/resources/strings_manger.dart';
 import '../../../core/global/resources/styles_manager.dart';
 import '../../../core/global/resources/values_manager.dart';
+import '../controller/history_bloc.dart';
+import '../controller/history_events.dart';
 import '../controller/search_bloc.dart';
 import '../controller/search_events.dart';
 import '../controller/search_state.dart';
@@ -108,6 +110,9 @@ class SearchViewBodyState extends State<SearchViewBody> {
             controller: _controller,
             clearSearch: _clearSearchWithUnfocus,
             focusNode: _focusNode,
+            onSubmitted: (String query) {
+              context.read<HistoryBloc>().add(AddHistoryEntry(query));
+            },
           ),
           const SizedBox(height: AppSize.s8),
           const Divider(
