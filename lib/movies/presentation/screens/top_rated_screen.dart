@@ -36,8 +36,14 @@ class TopRatedMoviesScreen extends StatelessWidget {
                 final movies = state.topRatedMovies;
 
                 if (movies.isEmpty) {
-                  return const Center(
-                      child: Text('No Top Rated Movies Available'));
+                  return Center(
+                      child: Text(
+                    'No Top Rated Movies Available',
+                    style: GoogleFonts.poppins(
+                      color: AppColors.gold,
+                      fontSize: 18.sp,
+                    ),
+                  ));
                 }
 
                 return CustomScrollView(
@@ -168,7 +174,7 @@ class TopRatedMoviesScreen extends StatelessWidget {
                                             child: Text(
                                               movie.overview,
                                               overflow: TextOverflow.ellipsis,
-                                              maxLines: 6,
+                                              maxLines: 4,
                                             ),
                                           ),
                                         ],

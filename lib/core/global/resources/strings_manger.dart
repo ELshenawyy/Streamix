@@ -9,7 +9,7 @@ class AppString {
   static const popularMovies = 'Popular Movies';
   static const topRatedMovies = 'Top Rated Movies';
   static const genres = "Genres";
-  static const nowPlaying = 'Now Playing';
+  static const nowStreaming = 'Now Streaming';
   static const onTheAir = 'On The Air';
   static const search = 'Search';
   static const play = 'play';

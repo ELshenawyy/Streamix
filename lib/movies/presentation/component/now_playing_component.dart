@@ -98,7 +98,7 @@ class NowPlayingComponent extends StatelessWidget {
                                     ),
                                     const SizedBox(width: 5.0),
                                     Text(
-                                      AppString.nowPlaying.toUpperCase(),
+                                      AppString.nowStreaming.toUpperCase(),
                                       style: GoogleFonts.poppins(
                                         fontSize: 16,
                                       ).copyWith(

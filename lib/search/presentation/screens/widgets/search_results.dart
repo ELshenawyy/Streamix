@@ -59,7 +59,10 @@ class SearchResults extends StatelessWidget {
       return Center(
         child: Text(
           AppString.noResultsFound,
-          style: getMediumStyle(fontSize: FontSize.s16),
+          style: GoogleFonts.poppins(
+          color: AppColors.gold,
+          fontSize: 16.sp,
+        ),
         ),
       );
     }

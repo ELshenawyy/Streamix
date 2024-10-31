@@ -4,7 +4,6 @@ class Movie extends Equatable {
   final String title;
   final String backdropPath;
   final String posterPath;
-
   final int id;
   final double voteAverage;
   final List<int> genreIds;

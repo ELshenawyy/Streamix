@@ -28,34 +28,44 @@ class PopularMoviesScreen extends StatelessWidget {
           builder: (context, state) {
             switch (state.popularState) {
               case RequestState.loading:
-                return  const Center(child: CircularProgressIndicator(color: AppColors.gold,));
+                return const Center(
+                    child: CircularProgressIndicator(
+                  color: AppColors.gold,
+                ));
 
               case RequestState.loaded:
                 final movies = state.popularMovies;
 
                 if (movies.isEmpty) {
-                  return const Center(child: Text('No Popular Movies Available'));
+                  return Center(
+                      child: Text(
+                    'No Popular Movies Available',
+                    style: GoogleFonts.poppins(
+                      color: AppColors.gold,
+                      fontSize: 18.sp,
+                    ),
+                  ));
                 }
 
                 return CustomScrollView(
                   slivers: [
                     SliverAppBar(
-                      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                      backgroundColor:
+                          Theme.of(context).scaffoldBackgroundColor,
                       expandedHeight: 60.0,
                       floating: false,
                       pinned: false,
                       flexibleSpace: FlexibleSpaceBar(
                         title: Text(
-                          'Popular Movies',
-                          style: GoogleFonts.poppins(fontSize: 20),
+                          'trending movies',
+                          style: GoogleFonts.poppins(fontSize: 20.sp),
                           textAlign: TextAlign.center,
                         ),
-                        centerTitle: true,
                       ),
                     ),
                     SliverList(
                       delegate: SliverChildBuilderDelegate(
-                            (context, index) {
+                        (context, index) {
                           final movie = movies[index];
                           return InkWell(
                             onTap: () {
@@ -67,6 +77,7 @@ class PopularMoviesScreen extends StatelessWidget {
                               );
                             },
                             child: Material(
+
                               type: MaterialType.transparency,
                               elevation: 5,
                               borderRadius: BorderRadius.circular(8.0),
@@ -78,26 +89,32 @@ class PopularMoviesScreen extends StatelessWidget {
                                     ClipRRect(
                                       borderRadius: BorderRadius.circular(8.0),
                                       child: CachedNetworkImage(
-                                        height: MediaQuery.of(context).size.height * 0.25,
-                                        width: MediaQuery.of(context).size.width * 0.32,
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                0.25,
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.32,
                                         imageUrl: movie.backdropPath != null
-                                            ? ApiConstance.imageUrl(movie.backdropPath)
+                                            ? ApiConstance.imageUrl(
+                                                movie.backdropPath)
                                             : 'https://via.placeholder.com/150',
                                         fit: BoxFit.cover,
                                         placeholder: (context, url) =>
                                             Shimmer.fromColors(
-                                              baseColor: Colors.grey[850]!,
-                                              highlightColor: Colors.grey[800]!,
-                                              child: Container(color: Colors.black),
-                                            ),
+                                          baseColor: Colors.grey[850]!,
+                                          highlightColor: Colors.grey[800]!,
+                                          child: Container(color: Colors.black),
+                                        ),
                                         errorWidget: (context, url, error) =>
-                                        const Icon(Icons.error),
+                                            const Icon(Icons.error),
                                       ),
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.all(10.0),
                                       child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           SizedBox(
                                             width: 200,
@@ -115,16 +132,20 @@ class PopularMoviesScreen extends StatelessWidget {
                                           Row(
                                             children: [
                                               Container(
-                                                padding: const EdgeInsets.symmetric(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
                                                   vertical: 2.0,
                                                   horizontal: 8.0,
                                                 ),
                                                 decoration: BoxDecoration(
                                                   color: Colors.red[800],
-                                                  borderRadius: BorderRadius.circular(4.0),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          4.0),
                                                 ),
                                                 child: Text(
-                                                  movie.releaseDate.split('-')[0],
+                                                  movie.releaseDate
+                                                      .split('-')[0],
                                                   style: const TextStyle(
                                                     fontSize: 16.0,
                                                     fontWeight: FontWeight.w500,
@@ -138,7 +159,8 @@ class PopularMoviesScreen extends StatelessWidget {
                                               ),
                                               const SizedBox(width: 8),
                                               Text(
-                                                movie.voteAverage.toStringAsFixed(1),
+                                                movie.voteAverage
+                                                    .toStringAsFixed(1),
                                                 style: const TextStyle(
                                                   fontSize: 16.0,
                                                   fontWeight: FontWeight.w500,
@@ -147,12 +169,13 @@ class PopularMoviesScreen extends StatelessWidget {
                                               ),
                                             ],
                                           ),
+                                          const SizedBox(height: 8),
                                           SizedBox(
                                             width: 208.w,
                                             child: Text(
                                               movie.overview,
                                               style: GoogleFonts.poppins(),
-                                              maxLines: 6,
+                                              maxLines: 4,
                                               overflow: TextOverflow.ellipsis,
                                             ),
                                           ),

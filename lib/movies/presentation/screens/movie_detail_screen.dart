@@ -1,4 +1,5 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:movie_app/core/global/resources/app_color.dart';
 import 'package:movie_app/watch_movies/screens/watch_movies.dart';
@@ -52,12 +53,19 @@ class MovieDetailContent extends StatelessWidget {
           case RequestState.loading:
             return const Center(
                 child: CircularProgressIndicator(
-                  color: AppColors.gold,
-                ));
+              color: AppColors.gold,
+            ));
           case RequestState.loaded:
             final movieDetails = state.moviesDetails;
             if (movieDetails == null) {
-              return const Center(child: Text("Movie details unavailable."));
+              return Center(
+                  child: Text(
+                "Movie details unavailable.",
+                style: GoogleFonts.poppins(
+                  color: AppColors.gold,
+                  fontSize: 18.sp,
+                ),
+              ));
             }
 
             return CustomScrollView(
@@ -90,22 +98,25 @@ class MovieDetailContent extends StatelessWidget {
                           blendMode: BlendMode.dstIn,
                           child: movieDetails.backdropPath != null
                               ? CachedNetworkImage(
-                            width: MediaQuery.of(context).size.width,
-                            imageUrl: ApiConstance.imageUrl(
-                                movieDetails.backdropPath),
-                            fit: BoxFit.cover,
-                          )
+                                  width: MediaQuery.of(context).size.width,
+                                  imageUrl: ApiConstance.imageUrl(
+                                      movieDetails.backdropPath),
+                                  fit: BoxFit.cover,
+                                )
                               : Container(
-                            width: MediaQuery.of(context).size.width,
-                            height: 250.0,
-                            color: Colors.grey,
-                            child: const Center(
-                              child: Text(
-                                'Image not available',
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            ),
-                          ),
+                                  width: MediaQuery.of(context).size.width,
+                                  height: 250.0,
+                                  color: Colors.grey,
+                                  child: Center(
+                                    child: Text(
+                                      'Image not available',
+                                      style: GoogleFonts.poppins(
+                                        color: AppColors.gold,
+                                        fontSize: 18.sp,
+                                      ),
+                                    ),
+                                  ),
+                                ),
                         ),
                       ),
                     ),
@@ -154,7 +165,8 @@ class MovieDetailContent extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(4.0),
                                 ),
                                 child: Text(
-                                  movieDetails.releaseDate.split('-')[0] ?? 'N/A',
+                                  movieDetails.releaseDate.split('-')[0] ??
+                                      'N/A',
                                   style: const TextStyle(
                                     fontSize: 16.0,
                                     fontWeight: FontWeight.w500,
@@ -171,7 +183,7 @@ class MovieDetailContent extends StatelessWidget {
                                 Text(
                                   movieDetails.voteAverage != null
                                       ? movieDetails.voteAverage
-                                      .toStringAsFixed(1)
+                                          .toStringAsFixed(1)
                                       : 'N/A',
                                   style: const TextStyle(
                                     fontSize: 16.0,
@@ -182,8 +194,9 @@ class MovieDetailContent extends StatelessWidget {
                                 IconButton(
                                   icon: Icon(
                                     Provider.of<FavoriteMovieProvider>(context)
-                                        .isFavoriteMovie(
-                                        state.moviesDetails!.id.toString())
+                                            .isFavoriteMovie(state
+                                                .moviesDetails!.id
+                                                .toString())
                                         ? Icons.favorite
                                         : Icons.favorite_border_rounded,
                                     color: Colors.red,
@@ -191,9 +204,9 @@ class MovieDetailContent extends StatelessWidget {
                                   ),
                                   onPressed: () async {
                                     final favoriteMovieProvider =
-                                    Provider.of<FavoriteMovieProvider>(
-                                        context,
-                                        listen: false);
+                                        Provider.of<FavoriteMovieProvider>(
+                                            context,
+                                            listen: false);
                                     if (favoriteMovieProvider.isFavoriteMovie(
                                         state.moviesDetails!.id.toString())) {
                                       favoriteMovieProvider.removeFavoriteMovie(
@@ -209,7 +222,8 @@ class MovieDetailContent extends StatelessWidget {
                                 ),
                               ]),
                               SizedBox(
-                                  width: MediaQuery.of(context).size.width * 0.25),
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.25),
                               Text(
                                 _showDuration(movieDetails.runtime),
                                 style: const TextStyle(
@@ -275,7 +289,8 @@ class MovieDetailContent extends StatelessWidget {
                     onPressed: () {
                       BlocProvider.of<MovieDetailsBloc>(context)
                         ..add(GetDetailsMovieEvent(state.moviesDetails!.id))
-                        ..add(GetRecommendedMoviesEvent(state.moviesDetails!.id));
+                        ..add(
+                            GetRecommendedMoviesEvent(state.moviesDetails!.id));
                     },
                     child: const Text('Retry'),
                   ),
@@ -302,7 +317,7 @@ class MovieDetailContent extends StatelessWidget {
   Widget _showRecommendations(MovieDetailsState state) {
     return SliverGrid(
       delegate: SliverChildBuilderDelegate(
-            (context, index) {
+        (context, index) {
           final recommendation = state.moviesRecommendation[index];
           return FadeInUp(
             from: 20,
@@ -311,14 +326,15 @@ class MovieDetailContent extends StatelessWidget {
               onTap: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => MovieDetailScreen(id: recommendation.id),
+                    builder: (context) =>
+                        MovieDetailScreen(id: recommendation.id),
                   ),
                 );
               },
               child: ClipRRect(
                 borderRadius: const BorderRadius.all(Radius.circular(8.0)),
                 child: CachedNetworkImage(
-                  imageUrl: ApiConstance.imageUrl(recommendation.backdropPath!),
+                  imageUrl: ApiConstance.imageUrl(recommendation.posterPath?? ""),
                   placeholder: (context, url) => Shimmer.fromColors(
                     baseColor: Colors.grey[850]!,
                     highlightColor: Colors.grey[800]!,
@@ -354,7 +370,7 @@ class MovieDetailContent extends StatelessWidget {
 class MovieOverview extends StatefulWidget {
   final dynamic movieDetails;
 
-  const MovieOverview({Key? key, required this.movieDetails}) : super(key: key);
+  const MovieOverview({super.key, required this.movieDetails});
 
   @override
   State<MovieOverview> createState() => _MovieOverviewState();
@@ -373,14 +389,13 @@ class _MovieOverviewState extends State<MovieOverview> {
           style: GoogleFonts.poppins(
             fontSize: 14.0,
             fontWeight: FontWeight.w400,
-
           ),
-          maxLines: isExpanded ? null : 3,
+          maxLines: isExpanded ? null : 4,
           overflow: isExpanded ? TextOverflow.visible : TextOverflow.ellipsis,
         ),
         const SizedBox(height: 8.0),
         Align(
-          alignment: Alignment.centerRight,  // Aligns the "More/Less" to the right center
+          alignment: Alignment.centerRight,
           child: GestureDetector(
             onTap: () {
               setState(() {
@@ -396,8 +411,6 @@ class _MovieOverviewState extends State<MovieOverview> {
                     fontSize: 12.0,
                     fontWeight: FontWeight.w800,
                     color: Colors.red,
-
-
                   ),
                 ),
                 const SizedBox(width: 4.0),
@@ -414,7 +427,6 @@ class _MovieOverviewState extends State<MovieOverview> {
     );
   }
 }
-
 
 class PlayButtonWithHover extends StatefulWidget {
   final int movieId;
