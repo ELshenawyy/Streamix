@@ -2,17 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:movie_app/core/utils/styles.dart';
-import 'package:movie_app/movies/presentation/screens/movie_detail_screen.dart';
 import 'package:movie_app/search/presentation/screens/widgets/search_result_items.dart';
-
-import '../../../../../core/global/resources/font_manager.dart';
-import '../../../../../core/global/resources/styles_manager.dart';
-import '../../../../../core/global/resources/values_manager.dart';
-import '../../../../core/global/resources/app_color.dart';
-import '../../../../core/global/resources/strings_manger.dart';
+import '../../../../../core/global/resources/app_color.dart';
+import '../../../../../core/global/resources/strings_manger.dart';
+import '../../../../core/global/resources/values_manager.dart';
 import '../../../../movies/domain/entities/movies.dart';
-
+import '../../../../movies/presentation/screens/movie_detail_screen.dart';
 import '../../controller/search_bloc.dart';
 import '../../controller/search_state.dart';
 
@@ -46,7 +41,13 @@ class SearchResults extends StatelessWidget {
           return _buildMoviesList(state.results);
         } else if (state is SearchMoviesError) {
           return Center(
-            child: Text(state.message),
+            child: Text(
+              state.message,
+              style: GoogleFonts.poppins(
+                color: AppColors.gold,
+                fontSize: 16.sp,
+              ),
+            ),
           );
         }
         return const SizedBox.shrink();
@@ -60,9 +61,9 @@ class SearchResults extends StatelessWidget {
         child: Text(
           AppString.noResultsFound,
           style: GoogleFonts.poppins(
-          color: AppColors.gold,
-          fontSize: 16.sp,
-        ),
+            color: AppColors.gold,
+            fontSize: 16.sp,
+          ),
         ),
       );
     }
@@ -73,27 +74,31 @@ class SearchResults extends StatelessWidget {
         final searchEntity = results[index];
         return InkWell(
           onTap: () {
-            FocusScope.of(context).unfocus();
             Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => MovieDetailScreen(
-                  id: searchEntity.id,
-                ),
+                builder: (context) => MovieDetailScreen(id: searchEntity.id),
               ),
             );
           },
-          child: Column(
-            children: [
-              SearchResultsItem(
-                title: searchEntity.title,
-                posterPath: searchEntity.posterPath,
-                releaseDate: searchEntity.releaseDate,
-                voteAverage: searchEntity.voteAverage.toDouble(),
-              ),
-            ],
+          child: Directionality(
+            textDirection: _getTextDirection(searchEntity.title),
+            child: Column(
+              children: [
+                SearchResultsItem(
+                  title: searchEntity.title,
+                  posterPath: searchEntity.posterPath,
+                  releaseDate: searchEntity.releaseDate,
+                  voteAverage: searchEntity.voteAverage.toDouble(),
+                ),
+              ],
+            ),
           ),
         );
       },
     );
+  }
+
+  TextDirection _getTextDirection(String title) {
+    return RegExp(r'[\u0600-\u06FF]').hasMatch(title) ? TextDirection.rtl : TextDirection.ltr;
   }
 }

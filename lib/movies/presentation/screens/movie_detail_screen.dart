@@ -16,6 +16,7 @@ import 'package:movie_app/movies/presentation/controllers/movie_details_event.da
 import 'package:movie_app/movies/presentation/controllers/movie_details_state.dart';
 import 'package:shimmer/shimmer.dart';
 
+import '../../../core/global/resources/darkmode.dart';
 import '../../../core/network/api_constance.dart';
 import '../../../favourits/presentation/controller/favoutite_screen_provider.dart';
 import '../../domain/entities/genres.dart';
@@ -90,7 +91,7 @@ class MovieDetailContent extends StatelessWidget {
                                 Colors.black,
                                 Colors.transparent,
                               ],
-                              stops: [0.0, 0.5, 1.0, 1.0],
+                              stops: [0.0, 0.31, 0.92, 1.0],
                             ).createShader(
                               Rect.fromLTRB(0.0, 0.0, rect.width, rect.height),
                             );
@@ -120,6 +121,18 @@ class MovieDetailContent extends StatelessWidget {
                         ),
                       ),
                     ),
+                  ),
+                  leading: IconButton(
+                    icon: SvgPicture.asset(
+                      "assets/icons/Arrow_alt_left_alt.svg",
+                      color: ThemeUtils.isDarkMode(context)
+                          ? Colors.white
+                          : Colors.black,
+                      width: 40,
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
                   ),
                 ),
                 SliverToBoxAdapter(
@@ -237,19 +250,41 @@ class MovieDetailContent extends StatelessWidget {
                           const SizedBox(height: 20.0),
                           MovieOverview(movieDetails: movieDetails),
                           const SizedBox(height: 8.0),
-                          Text(
-                            '${AppStrings.genres}: ${_showGenres(movieDetails.genres)}',
-                            style: TextStyle(
-                              fontSize: 12.0,
-                              fontWeight: FontWeight.w500,
-                              letterSpacing: 1.2,
-                              color: Theme.of(context)
-                                  .textTheme
-                                  .titleSmall!
-                                  .color!
-                                  .withOpacity(0.6),
-                            ),
-                          ),
+                          Wrap(
+                            spacing: 8.0, // Space between the words
+                            children: _showGenres(movieDetails.genres)
+                                .split(', ')
+                                .map((genre) {
+                              return Container(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 4.0, horizontal: 8.0),
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: Theme.of(context)
+                                        .textTheme
+                                        .titleSmall!
+                                        .color!
+                                        .withOpacity(0.6),
+                                    width: 1.0, // Set border width
+                                  ),
+                                  borderRadius: BorderRadius.circular(
+                                      8.0), // Set border radius
+                                ),
+                                child: Text(
+                                  genre,
+                                  style: TextStyle(
+                                    fontSize: 14.0, // Adjust as needed
+                                    fontWeight: FontWeight.w500,
+                                    color: Theme.of(context)
+                                        .textTheme
+                                        .titleSmall!
+                                        .color!
+                                        .withOpacity(0.6),
+                                  ),
+                                ),
+                              );
+                            }).toList(),
+                          )
                         ],
                       ),
                     ),
@@ -262,9 +297,9 @@ class MovieDetailContent extends StatelessWidget {
                       from: 20,
                       duration: const Duration(milliseconds: 500),
                       child: const Text(
-                        AppStrings.moreLikeThis,
+                        "Recommended",
                         style: TextStyle(
-                          fontSize: 16.0,
+                          fontSize: 18.0,
                           fontWeight: FontWeight.w500,
                           letterSpacing: 1.2,
                         ),
@@ -334,7 +369,8 @@ class MovieDetailContent extends StatelessWidget {
               child: ClipRRect(
                 borderRadius: const BorderRadius.all(Radius.circular(8.0)),
                 child: CachedNetworkImage(
-                  imageUrl: ApiConstance.imageUrl(recommendation.posterPath?? ""),
+                  imageUrl:
+                      ApiConstance.imageUrl(recommendation.posterPath ?? ""),
                   placeholder: (context, url) => Shimmer.fromColors(
                     baseColor: Colors.grey[850]!,
                     highlightColor: Colors.grey[800]!,
@@ -417,7 +453,7 @@ class _MovieOverviewState extends State<MovieOverview> {
                 Icon(
                   isExpanded ? Icons.arrow_upward : Icons.arrow_downward,
                   color: Colors.red,
-                  size: 16.0,
+                  size: 17.0,
                 ),
               ],
             ),
@@ -453,30 +489,52 @@ class _PlayButtonWithHoverState extends State<PlayButtonWithHover> {
           isHovered = false;
         });
       },
-      child: GestureDetector(
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => WatchMovieScreen(movieId: widget.movieId),
+      child: Hero(
+        tag: "movieHero",
+        child: GestureDetector(
+          onTap: () {
+            Navigator.of(context).push(_createRouteToWatchMovieScreen());
+          },
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
+            height: isHovered ? 40 : 50,
+            width: isHovered ? 30 : 45,
+            decoration: const BoxDecoration(
+              shape: BoxShape.circle,
+              color: AppColors.gold,
             ),
-          );
-        },
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 200),
-          height: isHovered ? 40 : 50,
-          width: isHovered ? 30 : 45,
-          decoration: const BoxDecoration(
-            shape: BoxShape.circle,
-            color: AppColors.gold,
-          ),
-          child: Icon(
-            Icons.play_arrow_rounded,
-            size: isHovered ? 35 : 30,
-            color: Colors.white,
+            child: Icon(
+              Icons.play_arrow_rounded,
+              size: isHovered ? 35 : 30,
+              color: Colors.white,
+            ),
           ),
         ),
       ),
+    );
+  }
+
+  Route _createRouteToWatchMovieScreen() {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) =>
+          WatchMovieScreen(movieId: widget.movieId),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        var begin = Offset(0.0, 1.0); // Slide from bottom to top
+        var end = Offset.zero;
+        var curve = Curves.ease;
+
+        var tween =
+            Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+        var fadeTransition =
+            FadeTransition(opacity: animation, child: child); // Add fade effect
+
+        return SlideTransition(
+          position: animation.drive(tween),
+          child: fadeTransition,
+        );
+      },
+      transitionDuration:
+          Duration(milliseconds: 500), // Customize transition duration
     );
   }
 }

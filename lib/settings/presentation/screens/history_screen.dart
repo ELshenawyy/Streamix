@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../core/global/resources/app_color.dart';
@@ -11,8 +12,12 @@ import '../../../search/presentation/controller/history_state.dart';
 class HistoryScreen extends StatelessWidget {
   const HistoryScreen({super.key});
 
+
   @override
+
   Widget build(BuildContext context) {
+    final darkMode = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -27,16 +32,18 @@ class HistoryScreen extends StatelessWidget {
         label: Text(
           'Clear All',
           style: TextStyle(
-            color: Theme.of(context).brightness == Brightness.dark
+            color: darkMode
                 ? Colors.white
                 : Colors.black,
             fontSize: 15.sp,
           ),
         ),
-        icon: Icon(Icons.delete,
-            color: Theme.of(context).brightness == Brightness.dark
-                ? Colors.white
-                : Colors.black),
+        icon: SvgPicture.asset(
+          "assets/icons/Trash_light.svg",
+          color: darkMode
+              ? Colors.white
+              : Colors.black,
+        ),
         backgroundColor: Colors.red,
       ),
       body: BlocBuilder<HistoryBloc, HistoryState>(

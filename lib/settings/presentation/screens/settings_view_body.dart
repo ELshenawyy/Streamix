@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:movie_app/core/global/resources/app_color.dart';
 import 'package:movie_app/search/presentation/controller/search_events.dart';
@@ -49,10 +51,13 @@ class SettingsViewBody extends StatelessWidget {
 
           // Account Settings
 
-
           // Notifications Settings
           ListTile(
-            leading: const Icon(Icons.notifications_outlined),
+            leading:  SvgPicture.asset(
+              "assets/icons/Bell_light.svg",
+              color: darkMode ? Colors.white : Colors.black,
+              height: 27,
+            ),
             title: Text(
               "Notifications",
               style: GoogleFonts.poppins(),
@@ -65,7 +70,11 @@ class SettingsViewBody extends StatelessWidget {
 
           // Language Settings
           ListTile(
-            leading: const Icon(Icons.language),
+            leading:SvgPicture.asset(
+              "assets/icons/globe_light.svg",
+              color: darkMode ? Colors.white : Colors.black,
+              height: 27,
+            ),
             title: Text(
               "Language",
               style: GoogleFonts.poppins(),
@@ -78,7 +87,11 @@ class SettingsViewBody extends StatelessWidget {
 
           // Privacy & Security
           ListTile(
-            leading: const Icon(Icons.privacy_tip_outlined),
+            leading: SvgPicture.asset(
+              "assets/icons/Chield_check_light.svg",
+              color: darkMode ? Colors.white : Colors.black,
+              height: 27,
+            ),
             title: Text(
               "Privacy & Security",
               style: GoogleFonts.poppins(),
@@ -93,23 +106,30 @@ class SettingsViewBody extends StatelessWidget {
                       leading: const Icon(Icons.description),
                       title: const Text("Privacy Policy"),
                       onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(builder: (context)=> PrivacyPolicyScreen()));
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => PrivacyPolicyScreen()));
                       },
                     ),
                     ListTile(
                       leading: const Icon(Icons.history),
                       title: const Text("Clear Search History"),
                       onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(builder: (context)=> HistoryScreen()));
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => HistoryScreen()));
                       },
                     ),
                     ListTile(
                       leading: const Icon(Icons.analytics_outlined),
                       title: const Text("Ads & Analytics Preferences"),
                       onTap: () {
-                        // Navigate to Ads & Analytics screen
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                AdsAnalyticsPreferencesScreen(), // Replace with your actual screen widget
+                          ),
+                        );
                       },
-                    ),
+                    )
                   ],
                 ),
               );
@@ -120,7 +140,12 @@ class SettingsViewBody extends StatelessWidget {
 
           // About
           ListTile(
-            leading: const Icon(Icons.info_outline),
+            leading: SvgPicture.asset(
+              "assets/icons/Info_light.svg",
+              color: darkMode ? Colors.white : Colors.black,
+              height: 27,
+
+            ),
             title: Text(
               "About",
               style: GoogleFonts.poppins(),
@@ -146,7 +171,12 @@ class SettingsViewBody extends StatelessWidget {
 
           // Contact Us
           ListTile(
-            leading: const Icon(Icons.contact_mail),
+            leading: SvgPicture.asset(
+              "assets/icons/Send_light.svg",
+              color: darkMode ? Colors.white : Colors.black,
+              height: 27,
+
+            ),
             title: Text(
               "Contact Us",
               style: GoogleFonts.poppins(),
@@ -191,6 +221,61 @@ class SettingsViewBody extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class AdsAnalyticsPreferencesScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Ads & Analytics Preferences"),
+      ),
+      body: Center(
+        // Centering the main content vertically and horizontally
+        child: Container(
+          decoration: BoxDecoration(
+            color: Theme.of(context).brightness == Brightness.dark
+                ? Colors.grey[850]
+                : Colors.white, // Change background based on theme
+            borderRadius: BorderRadius.circular(12.0),
+            boxShadow: const [
+              BoxShadow(
+                color: Colors.black26,
+                blurRadius: 8.0,
+                offset: Offset(0, 4), // Changes position of shadow
+              ),
+            ],
+          ),
+          padding: EdgeInsets.all(16.0), // Padding inside the container
+          width: 300.w, // Set a fixed width for the container (responsive)
+          child: Column(
+            mainAxisSize: MainAxisSize.min, // Use min size to center content
+            children: [
+              Text(
+                "Manage your ads and analytics preferences here.",
+                style: GoogleFonts.poppins(
+                  color: AppColors.gold,
+                  fontSize: 18.sp,
+                ),
+                textAlign: TextAlign.center, // Center align the text
+              ),
+              SizedBox(height: 20.h),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text("Enable Ads"),
+                  Switch(
+                    value: false,
+                    onChanged: (value) {},
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

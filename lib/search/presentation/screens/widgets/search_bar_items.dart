@@ -1,24 +1,57 @@
 import 'package:flutter/material.dart';
-
-
 import '../../../../core/global/resources/app_color.dart';
 import '../../../../core/global/resources/strings_manger.dart';
 import '../../../../core/global/resources/styles_manager.dart';
 import 'cancel_text_button.dart';
 
-class SearchBarItems extends StatelessWidget {
+class SearchBarItems extends StatefulWidget {
   final TextEditingController? controller;
   final void Function()? clearSearch;
   final FocusNode focusNode;
-  final void Function(String query) onSubmitted; // New callback for submission
+  final void Function(String query) onSubmitted;
 
   const SearchBarItems({
     required this.controller,
     required this.clearSearch,
     required this.focusNode,
-    required this.onSubmitted, // Add to constructor
+    required this.onSubmitted,
     super.key,
   });
+
+  @override
+  _SearchBarItemsState createState() => _SearchBarItemsState();
+}
+
+class _SearchBarItemsState extends State<SearchBarItems> {
+  late TextAlign _textAlign;
+  late TextDirection _textDirection;
+
+  @override
+  void initState() {
+    super.initState();
+    _updateTextDirectionAndAlignment(widget.controller!.text);
+    widget.controller!.addListener(() {
+      _updateTextDirectionAndAlignment(widget.controller!.text);
+    });
+  }
+
+  void _updateTextDirectionAndAlignment(String text) {
+    if (_isArabic(text)) {
+      setState(() {
+        _textAlign = TextAlign.right;
+        _textDirection = TextDirection.rtl;
+      });
+    } else {
+      setState(() {
+        _textAlign = TextAlign.left;
+        _textDirection = TextDirection.ltr;
+      });
+    }
+  }
+
+  bool _isArabic(String text) {
+    return RegExp(r'[\u0600-\u06FF]').hasMatch(text);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,12 +61,14 @@ class SearchBarItems extends StatelessWidget {
         children: [
           Expanded(
             child: TextField(
-              focusNode: focusNode,
-              controller: controller,
+              focusNode: widget.focusNode,
+              controller: widget.controller,
               cursorColor: AppColors.gold,
               style: getMediumStyle(fontSize: 16).copyWith(
                 color: AppColors.black,
               ),
+              textAlign: _textAlign,
+              textDirection: _textDirection,
               decoration: InputDecoration(
                 contentPadding: const EdgeInsets.symmetric(
                   vertical: 16,
@@ -55,12 +90,12 @@ class SearchBarItems extends StatelessWidget {
               ),
               onSubmitted: (query) {
                 if (query.isNotEmpty) {
-                  onSubmitted(query); // Call the callback when user submits
+                  widget.onSubmitted(query);
                 }
               },
             ),
           ),
-          CancelTextButton(onPressed: clearSearch),
+          CancelTextButton(onPressed: widget.clearSearch),
         ],
       ),
     );

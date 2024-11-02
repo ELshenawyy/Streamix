@@ -1,10 +1,9 @@
 flutter_native_splash:
-  color: "#ffffff"
-  image: "assets/icons/app_icon_updated.png"
+  flutter_native_splash:
+    color: "#000000" # background color
+    image: assets/icons/app_icon.png # splash icon path
 
 
-  color_dark: "#000000"
-  image_dark: "assets/icons/app_icon_updated_dark.png"
 
   android: true
   ios: true
