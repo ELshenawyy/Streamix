@@ -8,6 +8,7 @@ import 'package:movie_app/core/services/service_locator.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../core/global/resources/app_color.dart';
+import '../../../core/global/resources/darkmode.dart';
 import '../../../core/network/api_constance.dart';
 import '../../../core/utils/enums.dart';
 import '../controllers/movies_bloc.dart';
@@ -27,10 +28,12 @@ class TopRatedMoviesScreen extends StatelessWidget {
           builder: (context, state) {
             switch (state.topRatedState) {
               case RequestState.loading:
-                return const Center(
-                    child: CircularProgressIndicator(
-                  color: AppColors.gold,
-                ));
+                return  Center(
+                    child: Image.asset(
+                        'assets/images/loading.gif'
+                        ,fit: BoxFit.fill
+
+                    ),);
 
               case RequestState.loaded:
                 final movies = state.topRatedMovies;
@@ -49,6 +52,28 @@ class TopRatedMoviesScreen extends StatelessWidget {
                 return CustomScrollView(
                   slivers: [
                     SliverAppBar(
+                      leading:  Padding(
+                        padding: const EdgeInsets.all(2.0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(18),
+                            color: Colors.grey.withOpacity(0.5),
+
+                          ),
+                          child: IconButton(
+                            icon: SvgPicture.asset(
+                              "assets/icons/Arrow_alt_left_alt.svg",
+                              color: ThemeUtils.isDarkMode(context)
+                                  ? Colors.white
+                                  : Colors.black,
+                              width: 40,
+                            ),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                        ),
+                      ),
                       backgroundColor:
                           Theme.of(context).scaffoldBackgroundColor,
                       expandedHeight: 60.0,
@@ -57,7 +82,10 @@ class TopRatedMoviesScreen extends StatelessWidget {
                       flexibleSpace: FlexibleSpaceBar(
                         title: Text(
                           'Top Rated Movies',
-                          style: GoogleFonts.poppins(fontSize: 18),
+                          style: GoogleFonts.montserrat(
+                            fontSize: 17.sp, // Adjust size as needed
+                            fontWeight: FontWeight.bold, // Make it bold
+                          ),
                           textAlign: TextAlign.center,
                         ),
                         centerTitle: true,

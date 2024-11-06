@@ -5,7 +5,7 @@ class AppString {
   static const slidingText = 'Find your next favorite\n movie or tv show';
   static const popular = "Popular";
   static const seeMore = "See More";
-  static const topRated = "top Rated";
+  static const topRated = "Top Rated";
   static const popularMovies = 'Popular Movies';
   static const topRatedMovies = 'Top Rated Movies';
   static const genres = "Genres";

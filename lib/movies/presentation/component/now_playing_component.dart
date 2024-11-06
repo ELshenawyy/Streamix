@@ -25,11 +25,13 @@ class NowPlayingComponent extends StatelessWidget {
     }, builder: (context, state) {
       switch (state.nowPlayingState) {
         case RequestState.loading:
-          return const SizedBox(
+          return SizedBox(
             height: 350,
             child: Center(
-              child: CircularProgressIndicator(
-                color: AppColors.gold,
+              child: Image.asset(
+                'assets/images/loading.gif'
+                ,fit: BoxFit.fill
+
               ),
             ),
           );
@@ -63,10 +65,10 @@ class NowPlayingComponent extends StatelessWidget {
                                 Colors.transparent,
                                 isDarkMode
                                     ? Colors.black.withOpacity(0.5)
-                                    : Colors.white.withOpacity(0.95),
+                                    : Colors.white.withOpacity(0.99),
                                 isDarkMode
                                     ? Colors.black.withOpacity(0.6)
-                                    : Colors.white.withOpacity(0.95),
+                                    : Colors.white.withOpacity(0.99),
                                 Colors.transparent,
                               ],
                               stops: const [0, 0.15, 0.75, 1],
@@ -87,7 +89,7 @@ class NowPlayingComponent extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               Padding(
-                                padding: const EdgeInsets.only(bottom: 8.0),
+                                padding: const EdgeInsets.only(bottom: 4.0),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
@@ -104,14 +106,14 @@ class NowPlayingComponent extends StatelessWidget {
                                       ).copyWith(
                                         color: isDarkMode
                                             ? Colors.white.withOpacity(0.7)
-                                            : Colors.black.withOpacity(0.7),
+                                            : Colors.black,
                                       ),
                                     ),
                                   ],
                                 ),
                               ),
                               Padding(
-                                padding: const EdgeInsets.only(bottom: 16.0),
+                                padding: const EdgeInsets.only(bottom: 8.0),
                                 child: Text(
                                   item.title,
                                   textAlign: TextAlign.center,

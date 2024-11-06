@@ -23,10 +23,14 @@ class PopularMoviesComponent extends StatelessWidget {
       builder: (context, state) {
         switch (state.popularState) {
           case RequestState.loading:
-            return  const SizedBox(
+            return   SizedBox(
               height: 170,
               child: Center(
-                child: CircularProgressIndicator(color: AppColors.gold,),
+                child: Image.asset(
+                    'assets/images/loading.gif'
+                    ,fit: BoxFit.fill
+
+                ),
               ),
             );
 

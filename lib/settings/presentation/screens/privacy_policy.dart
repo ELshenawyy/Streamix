@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class PrivacyPolicyScreen extends StatelessWidget {
@@ -12,9 +13,10 @@ class PrivacyPolicyScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           "Privacy Policy",
-          style: GoogleFonts.poppins(
-            fontSize: 24,
-            fontWeight: FontWeight.w600,
+          style: GoogleFonts.montserrat(
+            fontSize: 26.sp,
+            fontWeight: FontWeight.bold,
+
             color: isDarkMode ? Colors.white : Colors.black,
           ),
         ),
@@ -22,7 +24,6 @@ class PrivacyPolicyScreen extends StatelessWidget {
         iconTheme: IconThemeData(
           color: isDarkMode ? Colors.white : Colors.black,
         ),
-        elevation: 1,
       ),
       backgroundColor: isDarkMode ? Colors.black : Colors.white,
       body: SingleChildScrollView(

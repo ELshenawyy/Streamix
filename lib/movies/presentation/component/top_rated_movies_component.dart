@@ -23,11 +23,11 @@ class TopRatedMovies extends StatelessWidget {
       builder: (context, state) {
         switch (state.topRatedState) {
           case RequestState.loading:
-            return  SizedBox(
+            return SizedBox(
               height: 170,
               child: Center(
-                child: CircularProgressIndicator(color: AppColors.gold,),
-              ),
+                  child:
+                      Image.asset('assets/images/loading.gif', fit: BoxFit.fill)),
             );
 
           case RequestState.loaded:
@@ -48,7 +48,8 @@ class TopRatedMovies extends StatelessWidget {
                         onTap: () {
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (context) => MovieDetailScreen(id: movie.id),
+                              builder: (context) =>
+                                  MovieDetailScreen(id: movie.id),
                             ),
                           );
                         },

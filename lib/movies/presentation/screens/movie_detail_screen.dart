@@ -3,13 +3,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:movie_app/core/global/resources/app_color.dart';
 import 'package:movie_app/watch_movies/screens/watch_movies.dart';
+
+// ignore: depend_on_referenced_packages
 import 'package:provider/provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:movie_app/core/services/service_locator.dart';
-import 'package:movie_app/core/utils/app_strings.dart';
 import 'package:movie_app/core/utils/enums.dart';
 import 'package:movie_app/movies/presentation/controllers/movie_details_bloc.dart';
 import 'package:movie_app/movies/presentation/controllers/movie_details_event.dart';
@@ -18,7 +19,7 @@ import 'package:shimmer/shimmer.dart';
 
 import '../../../core/global/resources/darkmode.dart';
 import '../../../core/network/api_constance.dart';
-import '../../../favourits/presentation/controller/favoutite_screen_provider.dart';
+import '../../../favourites/presentation/controller/favourite_screen_provider.dart';
 import '../../domain/entities/genres.dart';
 
 class MovieDetailScreen extends StatelessWidget {
@@ -52,10 +53,9 @@ class MovieDetailContent extends StatelessWidget {
       builder: (context, state) {
         switch (state.moviesDetailsState) {
           case RequestState.loading:
-            return const Center(
-                child: CircularProgressIndicator(
-              color: AppColors.gold,
-            ));
+            return Center(
+              child: Image.asset('assets/images/loading.gif', fit: BoxFit.fill),
+            );
           case RequestState.loaded:
             final movieDetails = state.moviesDetails;
             if (movieDetails == null) {
@@ -122,17 +122,26 @@ class MovieDetailContent extends StatelessWidget {
                       ),
                     ),
                   ),
-                  leading: IconButton(
-                    icon: SvgPicture.asset(
-                      "assets/icons/Arrow_alt_left_alt.svg",
-                      color: ThemeUtils.isDarkMode(context)
-                          ? Colors.white
-                          : Colors.black,
-                      width: 40,
+                  leading: Padding(
+                    padding: const EdgeInsets.all(2.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(18),
+                        color: Colors.grey.withOpacity(0.4),
+                      ),
+                      child: IconButton(
+                        icon: SvgPicture.asset(
+                          "assets/icons/Arrow_alt_left_alt.svg",
+                          color: ThemeUtils.isDarkMode(context)
+                              ? Colors.white
+                              : Colors.black,
+                          width: 40,
+                        ),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
                     ),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
                   ),
                 ),
                 SliverToBoxAdapter(
@@ -250,30 +259,15 @@ class MovieDetailContent extends StatelessWidget {
                           const SizedBox(height: 20.0),
                           MovieOverview(movieDetails: movieDetails),
                           const SizedBox(height: 8.0),
-                          Wrap(
-                            spacing: 8.0, // Space between the words
-                            children: _showGenres(movieDetails.genres)
-                                .split(', ')
-                                .map((genre) {
-                              return Container(
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 4.0, horizontal: 8.0),
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: Theme.of(context)
-                                        .textTheme
-                                        .titleSmall!
-                                        .color!
-                                        .withOpacity(0.6),
-                                    width: 1.0, // Set border width
-                                  ),
-                                  borderRadius: BorderRadius.circular(
-                                      8.0), // Set border radius
-                                ),
-                                child: Text(
-                                  genre,
+                          SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'Genres: ',
                                   style: TextStyle(
-                                    fontSize: 14.0, // Adjust as needed
+                                    fontSize: 16.0,
                                     fontWeight: FontWeight.w500,
                                     color: Theme.of(context)
                                         .textTheme
@@ -282,8 +276,43 @@ class MovieDetailContent extends StatelessWidget {
                                         .withOpacity(0.6),
                                   ),
                                 ),
-                              );
-                            }).toList(),
+                                Wrap(
+                                  spacing: 8.0,
+                                  children: _showGenres(movieDetails.genres)
+                                      .split(', ')
+                                      .map((genre) {
+                                    return Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 4.0, horizontal: 8.0),
+                                      decoration: BoxDecoration(
+                                        border: Border.all(
+                                          color: Theme.of(context)
+                                              .textTheme
+                                              .titleSmall!
+                                              .color!
+                                              .withOpacity(0.6),
+                                          width: 1.0, // Set border width
+                                        ),
+                                        borderRadius:
+                                            BorderRadius.circular(8.0),
+                                      ),
+                                      child: Text(
+                                        genre,
+                                        style: TextStyle(
+                                          fontSize: 14.0, // Adjust as needed
+                                          fontWeight: FontWeight.w500,
+                                          color: Theme.of(context)
+                                              .textTheme
+                                              .titleSmall!
+                                              .color!
+                                              .withOpacity(0.6),
+                                        ),
+                                      ),
+                                    );
+                                  }).toList(),
+                                ),
+                              ],
+                            ),
                           )
                         ],
                       ),

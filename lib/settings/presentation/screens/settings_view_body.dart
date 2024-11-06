@@ -21,7 +21,10 @@ class SettingsViewBody extends StatelessWidget {
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         title: Text(
           "Settings",
-          style: GoogleFonts.poppins(fontSize: 28, letterSpacing: 1.2),
+          style: GoogleFonts.montserrat(
+            fontSize: 26.sp,
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ),
       body: ListView(
@@ -53,7 +56,7 @@ class SettingsViewBody extends StatelessWidget {
 
           // Notifications Settings
           ListTile(
-            leading:  SvgPicture.asset(
+            leading: SvgPicture.asset(
               "assets/icons/Bell_light.svg",
               color: darkMode ? Colors.white : Colors.black,
               height: 27,
@@ -70,7 +73,7 @@ class SettingsViewBody extends StatelessWidget {
 
           // Language Settings
           ListTile(
-            leading:SvgPicture.asset(
+            leading: SvgPicture.asset(
               "assets/icons/globe_light.svg",
               color: darkMode ? Colors.white : Colors.black,
               height: 27,
@@ -104,28 +107,37 @@ class SettingsViewBody extends StatelessWidget {
                   children: [
                     ListTile(
                       leading: const Icon(Icons.description),
-                      title: const Text("Privacy Policy"),
+                      title: Text(
+                        "Privacy Policy",
+                        style: GoogleFonts.poppins(),
+                      ),
                       onTap: () {
                         Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => PrivacyPolicyScreen()));
+                            builder: (context) => const PrivacyPolicyScreen()));
                       },
                     ),
                     ListTile(
                       leading: const Icon(Icons.history),
-                      title: const Text("Clear Search History"),
+                      title: Text(
+                        "Clear Search History",
+                        style: GoogleFonts.poppins(),
+                      ),
                       onTap: () {
                         Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => HistoryScreen()));
+                            builder: (context) => const HistoryScreen()));
                       },
                     ),
                     ListTile(
                       leading: const Icon(Icons.analytics_outlined),
-                      title: const Text("Ads & Analytics Preferences"),
+                      title: Text(
+                        "Ads & Analytics Preferences",
+                        style: GoogleFonts.poppins(),
+                      ),
                       onTap: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
                             builder: (context) =>
-                                AdsAnalyticsPreferencesScreen(), // Replace with your actual screen widget
+                                const AdsAnalyticsPreferencesScreen(), // Replace with your actual screen widget
                           ),
                         );
                       },
@@ -144,7 +156,6 @@ class SettingsViewBody extends StatelessWidget {
               "assets/icons/Info_light.svg",
               color: darkMode ? Colors.white : Colors.black,
               height: 27,
-
             ),
             title: Text(
               "About",
@@ -157,9 +168,9 @@ class SettingsViewBody extends StatelessWidget {
                 applicationVersion: "1.0.0",
                 applicationLegalese: "© 2024 Streamix Inc.",
                 applicationIcon: Image.asset(
-                  'assets/icons/app_icon.png',
-                  width: 48,
-                  height: 48,
+                  'assets/icons/app_icon_solid.png',
+                  width: 80,
+                  height: 80,
                 ),
                 barrierColor: darkMode
                     ? Colors.white.withOpacity(0.2)
@@ -175,7 +186,6 @@ class SettingsViewBody extends StatelessWidget {
               "assets/icons/Send_light.svg",
               color: darkMode ? Colors.white : Colors.black,
               height: 27,
-
             ),
             title: Text(
               "Contact Us",
@@ -194,14 +204,22 @@ class SettingsViewBody extends StatelessWidget {
                         color: darkMode ? Colors.white : Colors.black),
                   ),
                   content: Text(
-                    "Email: alshnawyahmd668@gmail.com\nPhone: +201200507628",
+                    "Email: alshnawyahmd668@gmail.com",
                     style: GoogleFonts.poppins(
                         color: darkMode ? Colors.white : Colors.black),
                   ),
                   actions: [
                     TextButton(
-                      onPressed: () => Navigator.pop(context),
-                      child: const Text("OK"),
+                      style: TextButton.styleFrom(
+                        foregroundColor: AppColors.gold,
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).pop(true);
+                      },
+                      child: Text(
+                        'Ok',
+                        style: GoogleFonts.poppins(fontSize: 16.sp),
+                      ),
                     ),
                   ],
                 ),
@@ -227,11 +245,22 @@ class SettingsViewBody extends StatelessWidget {
 }
 
 class AdsAnalyticsPreferencesScreen extends StatelessWidget {
+  const AdsAnalyticsPreferencesScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
+    final darkMode = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Ads & Analytics Preferences"),
+        title: Text(
+          "Ads & Analytics Preferences",
+          style: GoogleFonts.montserrat(
+            fontSize: 17.sp,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        backgroundColor: darkMode ? Colors.black : Colors.white,
       ),
       body: Center(
         // Centering the main content vertically and horizontally

@@ -12,9 +12,7 @@ import '../../../search/presentation/controller/history_state.dart';
 class HistoryScreen extends StatelessWidget {
   const HistoryScreen({super.key});
 
-
   @override
-
   Widget build(BuildContext context) {
     final darkMode = Theme.of(context).brightness == Brightness.dark;
 
@@ -22,8 +20,12 @@ class HistoryScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           'Search History',
-          style: GoogleFonts.poppins(fontSize: 22.sp),
+          style: GoogleFonts.montserrat(
+            fontSize: 26.sp,
+            fontWeight: FontWeight.bold,
+          ),
         ),
+        backgroundColor: darkMode ? Colors.black : Colors.white,
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
@@ -32,22 +34,23 @@ class HistoryScreen extends StatelessWidget {
         label: Text(
           'Clear All',
           style: TextStyle(
-            color: darkMode
-                ? Colors.white
-                : Colors.black,
+            color: darkMode ? Colors.white : Colors.black,
             fontSize: 15.sp,
           ),
         ),
         icon: SvgPicture.asset(
           "assets/icons/Trash_light.svg",
-          color: darkMode
-              ? Colors.white
-              : Colors.black,
+          color: darkMode ? Colors.white : Colors.black,
         ),
         backgroundColor: Colors.red,
       ),
       body: BlocBuilder<HistoryBloc, HistoryState>(
         builder: (context, state) {
+          bool isArabic(String text) {
+            return RegExp(r'^[\u0600-\u06FF]')
+                .hasMatch(text); // Arabic Unicode range
+          }
+
           if (state is HistoryLoading) {
             return const Center(
               child: CircularProgressIndicator(color: AppColors.gold),
@@ -65,17 +68,47 @@ class HistoryScreen extends StatelessWidget {
               );
             }
             return ListView.builder(
-              itemCount: state.history.length,
-              itemBuilder: (context, index) {
-                final entry = state.history[index];
-                return ListTile(
-                  title: Text(entry.query), // Display the movie name
-                  subtitle: Text(
-                    'Searched on: ${entry.timestamp.toLocal().toString().split('.')[0]}',
-                  ),
-                );
-              },
-            );
+                itemCount: state.history.length,
+                itemBuilder: (context, index) {
+                  final entry = state.history[index];
+                  return Column(
+                    children: [
+                      ListTile(
+                        leading: Icon(Icons.history, color: Colors.grey[700]),
+                        title: Text(
+                          entry.query,
+                          style: GoogleFonts.poppins(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textDirection: isArabic(entry.query)
+                              ? TextDirection.rtl
+                              : TextDirection.ltr,
+                        ),
+                        subtitle: Text(
+                          isArabic(entry.query)
+                              ? 'تم البحث في: ${entry.timestamp.toLocal().toString().split('.')[0]}'
+                              : 'Searched on: ${entry.timestamp.toLocal().toString().split('.')[0]}',
+                          style: GoogleFonts.poppins(
+                            fontSize: 14,
+                            fontStyle: FontStyle.italic,
+                            color: Colors.grey[600],
+                          ),
+                          textDirection: isArabic(entry.query)
+                              ? TextDirection.rtl
+                              : TextDirection.ltr,
+                        ),
+                      ),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16.0),
+                        child: Divider(
+                          color: Colors.grey,
+                          thickness: 0.5,
+                        ),
+                      ),
+                    ],
+                  );
+                });
           } else {
             return Center(
               child: Text(

@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:movie_app/core/global/resources/app_color.dart';
 import 'package:movie_app/core/utils/assets.dart';
-import '../../../../curved_navigation_bar/presentaion/screens/navigation_curved_bar.dart';
 import '../../../../curved_navigation_bar/presentaion/screens/test.dart';
 
 class SplashViewBody extends StatefulWidget {
@@ -25,7 +23,7 @@ class _SplashViewBodyState extends State<SplashViewBody>
     super.initState();
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 2),
+      duration: const Duration(seconds: 3),
     );
     _animation = Tween<Offset>(
       begin: const Offset(-2.0, 0.0),
@@ -53,7 +51,7 @@ class _SplashViewBodyState extends State<SplashViewBody>
     });
 
     Future.delayed(
-      const Duration(milliseconds: 4000), // or any duration you want
+      const Duration(milliseconds: 6000),
       () {
         Navigator.pushReplacement(
           context,

@@ -4,7 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:movie_app/movies/presentation/screens/movies_screen.dart';
 import 'package:provider/provider.dart';
 import '../../../core/utils/styles.dart';
-import '../../../favourits/presentation/favoutite_screen.dart';
+import '../../../favourites/presentation/favoutite_screen.dart';
 import '../../../search/presentation/screens/search_view.dart';
 import '../../../settings/presentation/screens/settings_view_body.dart';
 import '../manager/navigation_provider.dart';

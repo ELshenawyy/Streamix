@@ -166,7 +166,7 @@ class _WatchMovieScreenState extends State<WatchMovieScreen> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        SizedBox(height: 20),
+                        SizedBox(height: 70),
                         Text("Loading movie...",
                             style: TextStyle(color: AppColors.gold)),
                       ],

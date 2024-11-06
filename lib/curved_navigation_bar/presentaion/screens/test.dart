@@ -3,9 +3,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:movie_app/core/global/resources/app_color.dart';
 import 'package:provider/provider.dart';
+import '../../../favourites/presentation/favoutite_screen.dart';
 import '../../../movies/presentation/screens/movies_screen.dart';
 import '../../../search/presentation/screens/search_view.dart';
-import '../../../favourits/presentation/favoutite_screen.dart';
 import '../../../settings/presentation/screens/settings_view_body.dart';
 import '../manager/navigation_provider.dart';
 
