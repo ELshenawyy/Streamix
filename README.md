@@ -4,19 +4,18 @@ I made this app with Flutter using clean architecture and  bloc as state managem
 
 ## Description
 
-Screen Scene is a Movie and TV Show data app and searching for them too.
-I used (TMDB) for fetching the data.
+Streamix is a sleek movie streaming app offering easy access to popular, top-rated, and trending films. With a clean interface, personalized watchlists, and smooth playback, it’s built for effortless discovery and viewing.
 
 ## Badges
 
-| Splash View | Home View | Popular Movies | Top Rated Movies |
+| Splash View | Home View | Trending Movies | Top Rated Movies |
 | :-----------: | :---------: | :------------: | :--------------: |
-| <img src="https://github.com/user-attachments/assets/7833d356-d4b4-4e18-affe-be2237f45515" width="300"/> | <img src="https://github.com/user-attachments/assets/5feac5dd-9b62-4720-9986-bc475bb24ee2" width="300"/> | <img src="https://github.com/AhmedKhaled8907/movies_app/blob/main/screenshots/popular_movie.png?raw=true" width="300"/> | <img src="https://github.com/AhmedKhaled8907/movies_app/blob/main/screenshots/toprated_movie.png?raw=true" width="300"/> |
+| <img src="https://github.com/user-attachments/assets/7833d356-d4b4-4e18-affe-be2237f45515" width="300"/> | <img src="https://github.com/user-attachments/assets/5feac5dd-9b62-4720-9986-bc475bb24ee2" width="300"/> | <img src="[https://github.com/AhmedKhaled8907/movies_app/blob/main/screenshots/popular_movie.png?raw=true](https://github.com/user-attachments/assets/f5978f89-dd74-48c7-8ce1-90522030ec6e)" width="300"/> | <img src="[https://github.com/AhmedKhaled8907/movies_app/blob/main/screenshots/toprated_movie.png?raw=true](https://github.com/user-attachments/assets/c1ecfb17-9603-45f0-a075-7a00454c6b04)" width="300"/> |
 
 
-| Movie Details View | Similar View | Movie Search Movies | 
+| Movie Details View | Similar View | Movie Search Movies | Favourite Screen |
 | :-----------: | :---------: | :------------: 
-![](https://github.com/AhmedKhaled8907/movies_app/blob/main/screenshots/movie_details.png?raw=true)|![](https://github.com/AhmedKhaled8907/movies_app/blob/main/screenshots/similar.png?raw=true)|![](https://github.com/AhmedKhaled8907/movies_app/blob/main/screenshots/movie_search.png?raw=true)|![]
+| <img src="https://github.com/user-attachments/assets/aeabc34a-6b3e-47c9-b5e1-2f07dd18ceb1" width="300"/> | <img src="https://github.com/user-attachments/assets/248a65e4-3498-4ef7-832f-d22a98fba7ee" width="300"/> | <img src="https://github.com/user-attachments/assets/f7a696b4-00ec-48a0-9d87-1a8730af6f8f" width="300"/> | <img src="https://github.com/user-attachments/assets/627a4385-8483-4fe1-8fcb-a00365b20f4e" width="300"/> |
 
 
 | Light Movie View | Light Movie Details View | Light Search | 
