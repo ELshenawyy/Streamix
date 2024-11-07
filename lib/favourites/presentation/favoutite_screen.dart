@@ -10,44 +10,16 @@ import 'package:provider/provider.dart';
 import '../../core/global/resources/app_color.dart';
 import '../../core/global/resources/strings_manger.dart';
 import '../../core/utils/styles.dart';
+import '../../search/presentation/screens/widgets/cancel_text_button.dart';
 import 'controller/favourite_screen_provider.dart';
 
-class FavoriteScreen extends StatefulWidget {
-  @override
-  State<FavoriteScreen> createState() => _FavoriteScreenState();
-}
-
-class _FavoriteScreenState extends State<FavoriteScreen> {
+class FavoriteScreen extends StatelessWidget {
   final TextEditingController _searchController = TextEditingController();
-  List<Map<String, dynamic>> filteredMovies = [];
 
-  @override
-  void initState() {
-    super.initState();
-    // Fetch favorite movies
-    _fetchAndSetFavorites();
-  }
-
-  Future<void> _fetchAndSetFavorites() async {
-    await Provider.of<FavoriteMovieProvider>(context, listen: false)
-        .fetchFavoriteMovie();
-    _updateFilteredMovies();
-  }
-
-  void _updateFilteredMovies() {
+  void _filterMovies(String query, BuildContext context) {
     final provider = Provider.of<FavoriteMovieProvider>(context, listen: false);
-    setState(() {
-      filteredMovies = provider.favoriteMovie ?? [];
-    });
-  }
-
-  void _filterMovies(String query) {
-    final provider = Provider.of<FavoriteMovieProvider>(context, listen: false);
-    setState(() {
-      filteredMovies = provider.favoriteMovie?.where((movie) {
-        return movie['title'].toLowerCase().contains(query.toLowerCase());
-      }).toList() ?? [];
-    });
+    provider
+        .filterMovies(query); // Ensure that your provider has a filter method
   }
 
   @override
@@ -59,7 +31,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
       appBar: AppBar(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         title: Text(
-          'Favorites (${favoriteProvider.favoriteMovie?.length})',
+          'Favorites (${favoriteProvider.favoriteMovie.length})',
           style: GoogleFonts.montserrat(
             fontSize: 26.sp,
             fontWeight: FontWeight.bold,
@@ -75,29 +47,40 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
             ),
             onPressed: () {
               showSearch(
-                  context: context,
-                  delegate: MovieSearchDelegate(onSearch: _filterMovies));
+                context: context,
+                delegate: MovieSearchDelegate(onSearch: (query) {
+                  _filterMovies(query, context);
+                }),
+              );
             },
           ),
         ],
       ),
-      body: filteredMovies.isEmpty
+      body: favoriteProvider.favoriteMovie.isEmpty
           ? Center(
-          child: Text(AppString.noFavouriteAddedYet,
-              style: GoogleFonts.poppins(
-                  color: AppColors.gold, fontSize: 18.sp)))
+              child: Text(
+                AppString.noFavouriteAddedYet,
+                style: GoogleFonts.poppins(
+                  color: AppColors.gold,
+                  fontSize: 18.sp,
+                ),
+              ),
+            )
           : GridView.builder(
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          childAspectRatio: 0.73,
-          crossAxisSpacing: 2.0,
-          mainAxisSpacing: 8.0,
-        ),
-        itemCount: filteredMovies.length,
-        itemBuilder: (context, index) {
-          return buildFavoriteItem(context, filteredMovies[index]);
-        },
-      ),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                childAspectRatio: 0.73,
+                crossAxisSpacing: 2.0,
+                mainAxisSpacing: 8.0,
+              ),
+              itemCount: favoriteProvider.favoriteMovie.length,
+              itemBuilder: (context, index) {
+                return buildFavoriteItem(
+                  context,
+                  favoriteProvider.favoriteMovie[index],
+                );
+              },
+            ),
     );
   }
 
@@ -123,7 +106,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                           ? ApiConstance.baseImageUrl + movie['image']
                           : movie['image'],
                       placeholder: (context, url) =>
-                      const Center(child: CircularProgressIndicator()),
+                          const Center(child: CircularProgressIndicator()),
                       errorWidget: (context, url, error) =>
                           Image.asset('assets/images/fallback_image.png'),
                     ),
@@ -144,10 +127,11 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                 left: 115.w,
                 child: IconButton(
                   onPressed: () async {
-                    final confirm = await showDialog<bool>( // Show dialog for confirmation
+                    final confirm = await showDialog<bool>(
                       context: context,
                       builder: (context) {
-                        final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+                        final isDarkMode =
+                            Theme.of(context).brightness == Brightness.dark;
 
                         return AlertDialog(
                           title: Text(
@@ -162,13 +146,15 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                             'Are you sure you want to remove this movie from your favorites?',
                             style: GoogleFonts.poppins(
                               fontSize: 16.sp,
-                              color: isDarkMode ? Colors.white70 : Colors.black54,
+                              color:
+                                  isDarkMode ? Colors.white70 : Colors.black54,
                             ),
                           ),
                           actions: [
                             TextButton(
                               style: TextButton.styleFrom(
-                                foregroundColor: isDarkMode ? Colors.white : Colors.grey,
+                                foregroundColor:
+                                    isDarkMode ? Colors.white : Colors.grey,
                               ),
                               onPressed: () => Navigator.of(context).pop(false),
                               child: Text(
@@ -193,22 +179,16 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                             borderRadius: BorderRadius.circular(15),
                           ),
                           elevation: 5,
-                          backgroundColor: isDarkMode ? Colors.black87 : Colors.white,
+                          backgroundColor:
+                              isDarkMode ? Colors.black87 : Colors.white,
                         );
                       },
                     );
 
                     if (confirm == true) {
-                      await Provider.of<FavoriteMovieProvider>(context, listen: false)
+                      await Provider.of<FavoriteMovieProvider>(context,
+                              listen: false)
                           .removeFavoriteMovie(movie['id']);
-
-                      // Re-fetch the favorites to ensure we have the latest data
-                      _fetchAndSetFavorites();
-
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                            content: Text('Movie removed from favorites')),
-                      );
                     }
                   },
                   icon: Icon(
@@ -234,7 +214,6 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
   }
 }
 
-
 class MovieSearchDelegate extends SearchDelegate {
   final Function(String) onSearch;
 
@@ -243,31 +222,41 @@ class MovieSearchDelegate extends SearchDelegate {
   @override
   List<Widget>? buildActions(BuildContext context) {
     return [
-      IconButton(
-        icon: const Icon(Icons.clear),
-        onPressed: () {
-          query = ''; // Clear the search query
-          onSearch(query); // Call the search function with the cleared query
-          showSuggestions(context); // Optionally show suggestions
-        },
-      ),
+      CancelTextButton(onPressed: () {
+        query = '';
+        onSearch(query);
+        showSuggestions(context);
+      })
     ];
   }
 
   @override
   Widget buildLeading(BuildContext context) {
-    return IconButton(
-      icon: const Icon(Icons.arrow_back),
-      onPressed: () {
-        close(context, null);
-      },
+    return Padding(
+      padding: const EdgeInsets.all(4.0),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(18),
+          color: Colors.grey.withOpacity(0.5),
+        ),
+        child: IconButton(
+          icon: SvgPicture.asset(
+            "assets/icons/Arrow_alt_left_alt.svg",
+            color: ThemeUtils.isDarkMode(context) ? Colors.white : Colors.black,
+            width: 40,
+          ),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+      ),
     );
   }
 
   @override
   Widget buildSuggestions(BuildContext context) {
     final provider = Provider.of<FavoriteMovieProvider>(context);
-    final suggestions = provider.favoriteMovie!.where((movie) {
+    final suggestions = provider.favoriteMovie.where((movie) {
       return movie['title'].toLowerCase().contains(query.toLowerCase());
     }).toList();
 
@@ -276,9 +265,11 @@ class MovieSearchDelegate extends SearchDelegate {
       itemBuilder: (context, index) {
         final movie = suggestions[index];
         return ListTile(
-          title: Text(movie['title']),
+          title: Text(
+            movie['title'],
+            style: GoogleFonts.poppins(fontSize: 18),
+          ),
           onTap: () {
-            // Close the search and update the main screen with the selected suggestion
             onSearch(movie['title']);
             close(context, null);
           },
@@ -289,8 +280,8 @@ class MovieSearchDelegate extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
-    onSearch(query); // Filter movies based on the current query
-    close(context, null); // Close the search delegate
-    return Container(); // Just closing the search for simplicity
+    onSearch(query);
+    close(context, null);
+    return Container();
   }
 }

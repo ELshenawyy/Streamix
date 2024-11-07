@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:movie_app/core/utils/assets.dart';
-import '../../../../curved_navigation_bar/presentaion/screens/test.dart';
+import '../../../../curved_navigation_bar/presentaion/screens/nav_bar_screen.dart';
 
 class SplashViewBody extends StatefulWidget {
   const SplashViewBody({super.key});

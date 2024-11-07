@@ -53,7 +53,7 @@ class TopRatedMoviesScreen extends StatelessWidget {
                   slivers: [
                     SliverAppBar(
                       leading:  Padding(
-                        padding: const EdgeInsets.all(2.0),
+                        padding: const EdgeInsets.all(4.0),
                         child: Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(18),
@@ -77,13 +77,13 @@ class TopRatedMoviesScreen extends StatelessWidget {
                       backgroundColor:
                           Theme.of(context).scaffoldBackgroundColor,
                       expandedHeight: 60.0,
-                      floating: false,
-                      pinned: false,
+                      floating: true,
+                      pinned: true,
                       flexibleSpace: FlexibleSpaceBar(
                         title: Text(
                           'Top Rated Movies',
                           style: GoogleFonts.montserrat(
-                            fontSize: 17.sp, // Adjust size as needed
+                            fontSize: 15.sp, // Adjust size as needed
                             fontWeight: FontWeight.bold, // Make it bold
                           ),
                           textAlign: TextAlign.center,
@@ -156,7 +156,7 @@ class TopRatedMoviesScreen extends StatelessWidget {
                                               maxLines: 1,
                                             ),
                                           ),
-                                          const SizedBox(height: 8),
+                                          const SizedBox(height: 14),
                                           Row(
                                             children: [
                                               Container(
@@ -197,12 +197,15 @@ class TopRatedMoviesScreen extends StatelessWidget {
                                               ),
                                             ],
                                           ),
+                                          const SizedBox(height: 16),
+
                                           SizedBox(
                                             width: 208.w,
                                             child: Text(
                                               movie.overview,
-                                              overflow: TextOverflow.ellipsis,
+                                              style: GoogleFonts.poppins(),
                                               maxLines: 4,
+                                              overflow: TextOverflow.ellipsis,
                                             ),
                                           ),
                                         ],

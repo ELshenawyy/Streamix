@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:movie_app/core/global/resources/app_color.dart';
+// ignore: depend_on_referenced_packages
 import 'package:provider/provider.dart';
 import '../../../favourites/presentation/favoutite_screen.dart';
 import '../../../movies/presentation/screens/movies_screen.dart';
@@ -23,7 +24,15 @@ class _NavBarScreenState extends State<NavBarScreen> {
     bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      body: _getScreen(navigationProvider.currentPageIndex),
+      body: IndexedStack(
+        index: navigationProvider.currentPageIndex,
+        children: [
+          const MoviesScreen(),
+          const SearchView(),
+          FavoriteScreen(),
+          const SettingsViewBody(),
+        ],
+      ),
       bottomNavigationBar: Stack(
         children: [
           Container(
@@ -71,11 +80,11 @@ class _NavBarScreenState extends State<NavBarScreen> {
           AnimatedPositioned(
             bottom: 0,
             left: navigationProvider.currentPageIndex *
-                (MediaQuery.of(context).size.width / 4), // Divides the width equally
+                (MediaQuery.of(context).size.width / 4),
             duration: const Duration(milliseconds: 300),
             curve: Curves.easeInOut,
             child: Container(
-              width: MediaQuery.of(context).size.width / 4, // Each icon takes 1/4 of screen
+              width: MediaQuery.of(context).size.width / 4,
               height: 4.h, // Height of the underline
               color: AppColors.gold, // Underline color
             ),
@@ -112,21 +121,5 @@ class _NavBarScreenState extends State<NavBarScreen> {
         ),
       ),
     );
-  }
-
-  // Helper method to return the current screen based on index
-  Widget _getScreen(int index) {
-    switch (index) {
-      case 0:
-        return const MoviesScreen();
-      case 1:
-        return const SearchView();
-      case 2:
-        return FavoriteScreen();
-      case 3:
-        return const SettingsViewBody();
-      default:
-        return const MoviesScreen();
-    }
   }
 }

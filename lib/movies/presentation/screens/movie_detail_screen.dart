@@ -215,33 +215,28 @@ class MovieDetailContent extends StatelessWidget {
                                 ),
                                 IconButton(
                                   icon: Icon(
-                                    Provider.of<FavoriteMovieProvider>(context)
-                                            .isFavoriteMovie(state
-                                                .moviesDetails!.id
-                                                .toString())
+                                    Provider.of<FavoriteMovieProvider>(context, listen: true).isFavoriteMovie(
+                                        state.moviesDetails!.id.toString())
                                         ? Icons.favorite
                                         : Icons.favorite_border_rounded,
                                     color: Colors.red,
                                     size: 28,
                                   ),
                                   onPressed: () async {
-                                    final favoriteMovieProvider =
-                                        Provider.of<FavoriteMovieProvider>(
-                                            context,
-                                            listen: false);
-                                    if (favoriteMovieProvider.isFavoriteMovie(
-                                        state.moviesDetails!.id.toString())) {
-                                      favoriteMovieProvider.removeFavoriteMovie(
-                                          state.moviesDetails!.id.toString());
+                                    final favoriteMovieProvider = Provider.of<FavoriteMovieProvider>(context, listen: false);
+
+                                    if (favoriteMovieProvider.isFavoriteMovie(state.moviesDetails!.id.toString())) {
+                                      await favoriteMovieProvider.removeFavoriteMovie(state.moviesDetails!.id.toString());
                                     } else {
-                                      favoriteMovieProvider.addFavoriteMovie(
+                                      await favoriteMovieProvider.addFavoriteMovie(
                                         state.moviesDetails!.id.toString(),
                                         state.moviesDetails!.title,
                                         state.moviesDetails!.backdropPath ?? '',
                                       );
                                     }
                                   },
-                                ),
+                                )
+
                               ]),
                               SizedBox(
                                   width:
