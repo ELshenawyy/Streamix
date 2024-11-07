@@ -11,7 +11,7 @@ I used (TMDB) for fetching the data.
 
 | Splash View | Home View | Popular Movies | Top Rated Movies |
 | :-----------: | :---------: | :------------: | :--------------: |
-![](https://github.com/user-attachments/assets/bd391034-a618-42e3-a7d1-78b51e294633?raw=true)|![](https://github.com/AhmedKhaled8907/movies_app/blob/main/screenshots/movie.png?raw=true)|![](https://github.com/AhmedKhaled8907/movies_app/blob/main/screenshots/popular_movie.png?raw=true)|![](https://github.com/AhmedKhaled8907/movies_app/blob/main/screenshots/toprated_movie.png?raw=true)
+![](https://github.com/user-attachments/assets/7833d356-d4b4-4e18-affe-be2237f45515)|![](https://github.com/AhmedKhaled8907/movies_app/blob/main/screenshots/movie.png?raw=true)|![](https://github.com/AhmedKhaled8907/movies_app/blob/main/screenshots/popular_movie.png?raw=true)|![](https://github.com/AhmedKhaled8907/movies_app/blob/main/screenshots/toprated_movie.png?raw=true)
 
 | Movie Details View | Similar View | Movie Search Movies | 
 | :-----------: | :---------: | :------------: 
