@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:movie_app/curved_navigation_bar/presentaion/manager/navigation_provider.dart';
 import 'package:movie_app/search/presentation/controller/history_bloc.dart';
@@ -18,6 +19,8 @@ import 'favourites/presentation/controller/favourite_screen_provider.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await ScreenUtil.ensureScreenSize();
+  await dotenv.load(fileName: ".env");
+
 
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
@@ -38,7 +41,6 @@ void main() async {
       child: MultiBlocProvider(
         providers: [
           BlocProvider(create: (context) => getIt<HistoryBloc>()..add(LoadHistory())),
-          // Add other BlocProviders here if needed
         ],
       child: const MyApp(),
     ),

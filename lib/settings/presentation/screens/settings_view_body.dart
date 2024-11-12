@@ -51,43 +51,6 @@ class SettingsViewBody extends StatelessWidget {
             ),
           ),
           const Divider(),
-
-          // Account Settings
-
-          // Notifications Settings
-          ListTile(
-            leading: SvgPicture.asset(
-              "assets/icons/Bell_light.svg",
-              color: darkMode ? Colors.white : Colors.black,
-              height: 27,
-            ),
-            title: Text(
-              "Notifications",
-              style: GoogleFonts.poppins(),
-            ),
-            onTap: () {
-              // Navigate to Notification Settings page
-            },
-          ),
-          const Divider(),
-
-          // Language Settings
-          ListTile(
-            leading: SvgPicture.asset(
-              "assets/icons/globe_light.svg",
-              color: darkMode ? Colors.white : Colors.black,
-              height: 27,
-            ),
-            title: Text(
-              "Language",
-              style: GoogleFonts.poppins(),
-            ),
-            onTap: () {
-              // Display Language Selection Options
-            },
-          ),
-          const Divider(),
-
           // Privacy & Security
           ListTile(
             leading: SvgPicture.asset(
